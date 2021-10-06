@@ -18,18 +18,40 @@ import java.util.Scanner;
  * @author Melnikov
  */
 public class App {
+    Scanner scanner = new Scanner(System.in);
     Book[] books = new Book[10];
 
     public App() {
     }
     
     public void run(){
-    
+        String repeat = "y";
+        do{
+            System.out.println("Выберите задачу: ");
+            System.out.println("0: Закончить программу");
+            System.out.println("1: Добавить книгу");
+            int task = scanner.nextInt();
+            scanner.nextLine();
+            switch (task) {
+                case 0: 
+                    repeat="q";
+                    System.out.println("Программа закончена");
+                    break;
+                case 1: 
+                    System.out.println("Добавление книги: ");
+                    for (int i = 0; i < books.length; i++) {
+                        if(books[i] == null){
+                            books[i] = addBook();
+                            break;
+                        }
+                    }
+                    break;
+            }
+        }while("y".equals(repeat));
     }
     
     private Book addBook(){
         Book book = new Book();
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Введите название книги: ");
         book.setCaption(scanner.nextLine());
         System.out.print("Введите год издания: ");
@@ -40,7 +62,7 @@ public class App {
         scanner.nextLine();
         Author[] authors = new Author[countAuthors];
         for (int i = 0; i < authors.length; i++) {
-            System.out.print("Добавление автора "+i+1);
+            System.out.println("Добавление автора "+(i+1));
             Author author = new Author();
             System.out.print("Имя автора: ");
             author.setName(scanner.nextLine());
@@ -52,6 +74,7 @@ public class App {
             author.setDay(scanner.nextInt());
             System.out.print("Месяц рождения автора: ");
             author.setMonth(scanner.nextInt());
+            scanner.nextLine();
             authors[i]= author;
         }
         book.setAuthor(authors);
