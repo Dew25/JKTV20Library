@@ -21,6 +21,7 @@ import java.util.Scanner;
 public class App {
     Scanner scanner = new Scanner(System.in);
     Book[] books = new Book[10];
+    Reader[] readers = new Reader[10];
 
     public App() {
     }
@@ -32,6 +33,8 @@ public class App {
             System.out.println("0: Закончить программу");
             System.out.println("1: Добавить книгу");
             System.out.println("2: Список книг");
+            System.out.println("3: Добавить читателя");
+            System.out.println("4: Список читателей");
             int task = scanner.nextInt();
             scanner.nextLine();
             switch (task) {
@@ -56,10 +59,36 @@ public class App {
                         }
                     }
                     break;
+                case 3: 
+                    System.out.println("Добавление читателя: ");
+                    for (int i = 0; i < readers.length; i++) {
+                        if(readers[i] == null){
+                            readers[i] = addReader();
+                            break;
+                        }
+                    }
+                    break;
+                case 4: 
+                    System.out.println("Список читателей: ");
+                    for (int i = 0; i < readers.length; i++) {
+                        if(readers[i] != null){
+                            System.out.println(readers[i].toString());
+                        }
+                    }
+                    break;
             }
         }while("y".equals(repeat));
     }
-    
+    private Reader addReader(){
+        Reader reader = new Reader();
+        System.out.print("Введите имя читателя: ");
+        reader.setFirstname(scanner.nextLine());
+        System.out.print("Введите фамилию читателя: ");
+        reader.setLastname(scanner.nextLine());
+        System.out.print("Введите номер телефона читателя: ");
+        reader.setPhone(scanner.nextLine());
+        return reader;
+    }
     private Book addBook(){
         Book book = new Book();
         System.out.print("Введите название книги: ");
