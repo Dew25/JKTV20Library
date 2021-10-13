@@ -7,6 +7,7 @@ package entity;
 
 import entity.Author;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.util.Arrays;
  */
 public class Book {
     private String caption;
-    private Author[] author;
+    private List<Author> author;
     private int publishedYear;
     
     public Book() {
@@ -28,11 +29,11 @@ public class Book {
         this.caption = caption;
     }
 
-    public Author[] getAuthor() {
+    public List<Author> getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author[] author) {
+    public void setAuthor(List<Author> author) {
         this.author = author;
     }
 
@@ -48,7 +49,7 @@ public class Book {
     public String toString() {
         return "Book{" 
                 + "caption=" + caption 
-                + ",\n author=" + Arrays.toString(author)
+                + ",\n author=" + Arrays.toString(author.toArray())
                 + ",\n publishedYear=" + publishedYear 
                 + "\n}";
     }
