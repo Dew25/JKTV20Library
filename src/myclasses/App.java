@@ -219,6 +219,9 @@ public class App {
         int historyNumber = scanner.nextInt(); scanner.nextLine();
         Calendar c = new GregorianCalendar();
         histories.get(historyNumber - 1).setReturnDate(c.getTime());
+        // Здесь объясняется что значит передача по ссылке в Java
+        // https://coderoad.ru/40480/%D0%AD%D1%82%D0%BE-Java-pass-by-reference-%D0%B8%D0%BB%D0%B8-pass-by-value
+        // Постарайтесь понять
         for (int i = 0; i < books.size(); i++) {
           if(books.get(i).getCaption().equals(histories.get(historyNumber-1).getBook().getCaption())){
             books.get(i).setCount(books.get(i).getCount()+1);
