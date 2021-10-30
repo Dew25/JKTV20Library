@@ -219,9 +219,11 @@ public class App {
         int historyNumber = scanner.nextInt(); scanner.nextLine();
         Calendar c = new GregorianCalendar();
         histories.get(historyNumber - 1).setReturnDate(c.getTime());
-        histories.get(historyNumber - 1).getBook().setCount(
-            histories.get(historyNumber - 1).getBook().getCount() + 1
-        );
+        for (int i = 0; i < books.size(); i++) {
+          if(books.get(i).getCaption().equals(histories.get(historyNumber-1).getBook().getCaption())){
+            books.get(i).setCount(books.get(i).getCount()+1);
+          }
+        }
         keeper.saveBooks(books);
         keeper.saveHistories(histories);
     }
