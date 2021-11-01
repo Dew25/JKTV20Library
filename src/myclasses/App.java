@@ -143,9 +143,17 @@ public class App {
         history.setBook(books.get(bookNumber-1));
         System.out.println();
         System.out.println("Список читателей: ");
-        printListReaders();
-        System.out.print("Введите номер читателя: ");
-        int readerNumber = scanner.nextInt(); scanner.nextLine();
+        Set<Integer> setNumbersReaders =  printListReaders();
+        int readerNumber;
+        do{
+            System.out.print("Введите номер читателя из списка: ");
+            String strReaderNumber = scanner.nextLine();
+            try {
+                readerNumber = Integer.parseInt(strReaderNumber);
+            } catch (Exception e) {
+                readerNumber = 0;
+            }
+        }while(!setNumbersReaders.contains(readerNumber));
         history.setReader(readers.get(readerNumber-1));
         Calendar c = new GregorianCalendar();
         history.setGivenDate(c.getTime());
@@ -171,12 +179,34 @@ public class App {
         Book book = new Book();
         System.out.print("Введите название книги: ");
         book.setCaption(scanner.nextLine());
-        System.out.print("Введите год издания: ");
-        book.setPublishedYear(scanner.nextInt()); scanner.nextLine();
-        System.out.print("Введите количество экземпляров книги: ");
-        book.setQuantity(scanner.nextInt()); scanner.nextLine();
+        do{
+            System.out.print("Введите год издания: ");
+            try {
+                String strYear = scanner.nextLine();
+                book.setPublishedYear(Integer.parseInt(strYear));
+            } catch (Exception e) {
+                continue;
+            }
+        }while(false);
+        do{
+            System.out.print("Введите количество экземпляров книги: ");
+            try {
+                String strExemple = scanner.nextLine();
+                book.setQuantity(Integer.parseInt(strExemple));
+            } catch (Exception e) {
+                continue;
+            }
+        }while(false);
         book.setCount(book.getQuantity());
-        System.out.print("Сколько авторов у книги: ");
+        do{
+            System.out.print("Сколько авторов у книги: ");
+            try {
+                String strCountAuthors = scanner.nextLine();
+                book.setQuantity(Integer.parseInt(strCountAuthors ));
+            } catch (Exception e) {
+                continue;
+            }
+        }while(false);
         int countAuthors=scanner.nextInt(); scanner.nextLine();
         List<Author> authors = new ArrayList<>();
         for (int i = 0; i < countAuthors; i++) {
@@ -241,13 +271,19 @@ public class App {
         }
         return "";
     }
-    private void printListReaders() {
+    private Set<Integer> printListReaders() {
+        Set<Integer> setNumbersReaders = new HashSet<>();
         System.out.println("Список читателей: ");
         for (int i = 0; i < readers.size(); i++) {
             if(readers.get(i) != null){
-                System.out.printf("%d. %s%n",i+1,readers.get(i).toString());
+                System.out.printf("%d. %s%n"
+                        ,i+1
+                        ,readers.get(i).toString()
+                );
+                setNumbersReaders.add(i+1);
             }
         }
+        return setNumbersReaders;
     }
 
     private void returnBook() {
