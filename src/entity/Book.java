@@ -5,7 +5,6 @@
  */
 package entity;
 
-import entity.Author;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -80,11 +79,11 @@ public class Book implements Serializable{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.caption);
-        hash = 97 * hash + Objects.hashCode(this.author);
-        hash = 97 * hash + this.publishedYear;
-        hash = 97 * hash + this.quantity;
-        hash = 97 * hash + this.count;
+        hash = 47 * hash + Objects.hashCode(this.caption);
+        hash = 47 * hash + Objects.hashCode(this.author);
+        hash = 47 * hash + this.publishedYear;
+        hash = 47 * hash + this.quantity;
+        hash = 47 * hash + this.count;
         return hash;
     }
 
@@ -117,6 +116,7 @@ public class Book implements Serializable{
         }
         return true;
     }
-    
+
+
     
 }

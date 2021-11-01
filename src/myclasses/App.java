@@ -10,11 +10,16 @@ import entity.Book;
 import entity.Author;
 import entity.History;
 import interfaces.Keeping;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import keeper.FileKeeper;
 
 /**
@@ -79,9 +84,9 @@ public class App {
             }
         }while("y".equals(repeat));
     }
-    private void printGivenBooks(){
+    private Set<Integer> printGivenBooks(){
         System.out.println("Список выданных книг: ");
-        int n = 0;
+        Set<Integer> setNumberGivenBooks = new HashSet<>();
         for (int i = 0; i < histories.size(); i++) {
             //если history не null и книга не возварщена и книг в наличии меньше
             // чем записано в quantity -
@@ -97,12 +102,13 @@ public class App {
                         histories.get(i).getReader().getFirstname(),
                         histories.get(i).getReader().getLastname()
                 );
-                n++;
+                setNumberGivenBooks.add(i+1);
             }
         }
-        if(n < 1){
+        if(setNumberGivenBooks.isEmpty()){
             System.out.println("Выданных книг нет");
         }
+        return setNumberGivenBooks;
     }
     private void addHistory(){
         System.out.println("Выдача книги: ");
@@ -119,9 +125,21 @@ public class App {
          * 7. Получить текущую дату и положить ее в поле history.givenDate
          * 
          */
-        printListBooks();
-        System.out.print("Введите номер книги: ");
-        int bookNumber = scanner.nextInt(); scanner.nextLine();
+        Set<Integer> setNumbersBooks = printListBooks();
+        if(setNumbersBooks.isEmpty()){
+            return;
+        }
+        int bookNumber;
+        do{ 
+            System.out.print("Введите номер книги из списка: ");
+            String strBookNumber = scanner.nextLine();
+            try {
+                bookNumber = Integer.parseInt(strBookNumber);
+            } catch (Exception e) {
+                bookNumber = 0;
+            }
+            
+        }while(!setNumbersBooks.contains(bookNumber));
         history.setBook(books.get(bookNumber-1));
         System.out.println();
         System.out.println("Список читателей: ");
@@ -181,9 +199,10 @@ public class App {
         keeper.saveBooks(books);
     }
 
-    private void printListBooks() {
-       System.out.println("Список книг: ");
+    private Set<Integer> printListBooks() {
+        System.out.println("Список книг: ");
         books = keeper.loadBooks();
+        Set<Integer> setNumbersBooks = new HashSet<>();
         for (int i = 0; i < books.size(); i++) {
             StringBuilder cbAutors = new StringBuilder();
             for (int j = 0; j < books.get(i).getAuthor().size(); j++) {
@@ -199,10 +218,29 @@ public class App {
                         ,cbAutors.toString()
                         ,books.get(i).getCount()
                 );
+                setNumbersBooks.add(i+1);
+            }else if(books.get(i) != null){
+                System.out.printf("%d. %s. %s Нет наличии. Будет возварщена: %s%n"
+                        ,i+1
+                        ,books.get(i).getCaption()
+                        ,cbAutors.toString()
+                        ,getReturnDate(books.get(i))
+                );
             }
         }
+        return setNumbersBooks;
     }
-
+    private String getReturnDate(Book book){
+        
+        for (int i = 0; i < histories.size(); i++) {
+            if(book.getCaption().equals(histories.get(i).getBook().getCaption())){
+                LocalDate localGivenDate = histories.get(i).getGivenDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                localGivenDate = localGivenDate.plusDays(14);
+                return localGivenDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+            }
+        }
+        return "";
+    }
     private void printListReaders() {
         System.out.println("Список читателей: ");
         for (int i = 0; i < readers.size(); i++) {
@@ -214,9 +252,20 @@ public class App {
 
     private void returnBook() {
         System.out.println("Вернуть книгу: ");
-        printGivenBooks();
-        System.out.print("Выберите возвращаемую книгу: ");
-        int historyNumber = scanner.nextInt(); scanner.nextLine();
+        Set<Integer> numbersGivenBooks = printGivenBooks();
+        if(numbersGivenBooks.isEmpty()){
+            return;
+        }
+        int historyNumber;
+        do{
+            System.out.print("Выберите возвращаемую книгу из списка: ");
+            String strSistoryNumber = scanner.nextLine();
+            try {
+                historyNumber = Integer.parseInt(strSistoryNumber);
+            } catch (Exception e) {
+                historyNumber = 0;
+            }
+        }while(!numbersGivenBooks.contains(historyNumber));
         Calendar c = new GregorianCalendar();
         histories.get(historyNumber - 1).setReturnDate(c.getTime());
         // Здесь объясняется что значит передача по ссылке в Java
