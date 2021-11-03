@@ -114,6 +114,7 @@ public class App {
     }
     private void addHistory(){
         System.out.println("Выдача книги: ");
+        if(quit()) return;
         History history = new History();
         /**
          * 1. Вывести нумерованный список книг
@@ -133,11 +134,13 @@ public class App {
         }
         System.out.print("Введите номер книги из списка: ");
         int bookNumber = insertNumber(setNumbersBooks);
+
         history.setBook(books.get(bookNumber-1));
         System.out.println();
         System.out.println("Список читателей: ");
         Set<Integer> setNumbersReaders =  printListReaders();
         int readerNumber = insertNumber(setNumbersReaders);
+
         history.setReader(readers.get(readerNumber-1));
         Calendar c = new GregorianCalendar();
         history.setGivenDate(c.getTime());
@@ -148,6 +151,7 @@ public class App {
     }
     private void addReader(){
         System.out.println("Добавление читателя: ");
+        if(quit()) return;
         Reader reader = new Reader();
         System.out.print("Введите имя читателя: ");
         reader.setFirstname(scanner.nextLine());
@@ -158,14 +162,23 @@ public class App {
         readers.add(reader);
         keeper.saveReaders(readers);
     }
+    
+    private boolean quit(){
+        System.out.println("Чтобы закончить операцию нажмите \"q\", для продолжения любой другой символ");
+        String quit = scanner.nextLine();
+        if("q".equals(quit)) return true;
+      return false;
+    }
     private void addBook(){
         System.out.println("Добавление книги: ");
+        if(quit()) return;
         Book book = new Book();
         System.out.print("Введите название книги: ");
         book.setCaption(scanner.nextLine());
         System.out.print("Введите год издания: ");
         book.setPublishedYear(getNumber());
         System.out.print("Введите количество экземпляров книги: ");
+        book.setQuantity(getNumber());
         book.setQuantity(getNumber());
         book.setCount(book.getQuantity());
         System.out.print("Сколько авторов у книги: ");
@@ -250,12 +263,12 @@ public class App {
 
     private void returnBook() {
         System.out.println("Вернуть книгу: ");
+        if(quit()) return;
         Set<Integer> numbersGivenBooks = printGivenBooks();
         if(numbersGivenBooks.isEmpty()){
             return;
         }
         int historyNumber = insertNumber(numbersGivenBooks);
-        
         Calendar c = new GregorianCalendar();
         histories.get(historyNumber - 1).setReturnDate(c.getTime());
         // Здесь объясняется что значит передача по ссылке в Java
