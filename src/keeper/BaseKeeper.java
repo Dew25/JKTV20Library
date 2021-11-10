@@ -41,7 +41,6 @@ public class BaseKeeper implements Keeping{
             for (int i = 0; i < books.size(); i++) {
                 if(books.get(i).getId() == null){
                     for (int j = 0; j < books.get(i).getAuthor().size(); j++) {
-                        Book get = books.get(j);
                         Author author = books.get(i).getAuthor().get(j);
                         em.persist(author);
                     }
@@ -64,6 +63,28 @@ public class BaseKeeper implements Keeping{
     }
 
     @Override
+    public void saveAuthors(List<Author> authors) {
+        tx.begin();
+            for (int i = 0; i < authors.size(); i++) {
+                if(authors.get(i).getId() == null){
+                    em.persist(authors.get(i));
+                }
+            }
+        tx.commit();
+    }
+
+    @Override
+    public List<Author> loadAuthors() {
+        List<Author> authors = null;
+        try {
+            authors = em.createQuery("SELECT author FROM Author author")
+                    .getResultList();
+        } catch (Exception e) {
+            authors = new ArrayList<>();
+        }
+        return authors;
+    }
+    @Override
     public void saveReaders(List<Reader> readers) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -82,5 +103,6 @@ public class BaseKeeper implements Keeping{
     public List<History> loadHistories() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
     
 }
