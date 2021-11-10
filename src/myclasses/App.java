@@ -28,15 +28,20 @@ import keeper.FileKeeper;
  * @author Melnikov
  */
 public class App {
-    Scanner scanner = new Scanner(System.in);
-    List<Book> books = new ArrayList<>();
-    List<Reader> readers = new ArrayList<>();
-    List<History> histories = new ArrayList<>();
-    List<Author> authors = new ArrayList<>();
-//    Keeping keeper = new FileKeeper();
-    Keeping keeper = new BaseKeeper();
+    public static boolean isBase;
+    private Scanner scanner = new Scanner(System.in);
+    private List<Book> books = new ArrayList<>();
+    private List<Reader> readers = new ArrayList<>();
+    private List<History> histories = new ArrayList<>();
+    private List<Author> authors = new ArrayList<>();
+    private Keeping keeper;
 
     public App() {
+        if(App.isBase){
+            keeper = new BaseKeeper();
+        }else{
+            keeper = new FileKeeper();
+        }
         books = keeper.loadBooks();
         authors = keeper.loadAuthors();
         readers = keeper.loadReaders();

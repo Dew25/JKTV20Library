@@ -28,15 +28,6 @@ public class BaseKeeper implements Keeping{
 
     @Override
     public void saveBooks(List<Book> books) {
-        /* Истправление ошибки
-         * Возникала ошибка потому что мы пытались сохранить в базу объект book,
-         * который содержит массив объектов author. Т.к. объект автор записывается 
-         * в таблицу book_author по ссылке на поле id, а ведь author еще не сохранен
-         * в таблице и поэтому его id = null. Это и дает ошибку
-         * 
-         *  Исправление ошибки в том, что мы сначала добавляем в базу авторов книги,
-         * а потом книгу с этими авторами
-        */
         tx.begin();
             for (int i = 0; i < books.size(); i++) {
                 if(books.get(i).getId() == null){
