@@ -86,22 +86,48 @@ public class BaseKeeper implements Keeping{
     }
     @Override
     public void saveReaders(List<Reader> readers) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        tx.begin();
+            for (int i = 0; i < readers.size(); i++) {
+                if(readers.get(i).getId() == null){
+                    em.persist(readers.get(i));
+                }
+            }
+        tx.commit();
     }
 
     @Override
     public List<Reader> loadReaders() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Reader> readers = null;
+        try {
+            readers = em.createQuery("SELECT readers FROM Reader readers")
+                    .getResultList();
+        } catch (Exception e) {
+            readers = new ArrayList<>();
+        }
+        return readers;
     }
 
     @Override
     public void saveHistories(List<History> histories) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        tx.begin();
+            for (int i = 0; i < histories.size(); i++) {
+                if(histories.get(i).getId() == null){
+                    em.persist(histories.get(i));
+                }
+            }
+        tx.commit();
     }
 
     @Override
     public List<History> loadHistories() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<History> histories = null;
+        try {
+            histories = em.createQuery("SELECT histories FROM History histories")
+                    .getResultList();
+        } catch (Exception e) {
+            histories = new ArrayList<>();
+        }
+        return histories;
     }
 
     

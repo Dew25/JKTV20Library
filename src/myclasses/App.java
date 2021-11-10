@@ -39,8 +39,8 @@ public class App {
     public App() {
         books = keeper.loadBooks();
         authors = keeper.loadAuthors();
-//        readers = keeper.loadReaders();
-//        histories = keeper.loadHistories();
+        readers = keeper.loadReaders();
+        histories = keeper.loadHistories();
     }
     
     public void run(){
