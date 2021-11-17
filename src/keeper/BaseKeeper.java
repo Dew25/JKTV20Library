@@ -31,11 +31,9 @@ public class BaseKeeper implements Keeping{
         tx.begin();
             for (int i = 0; i < books.size(); i++) {
                 if(books.get(i).getId() == null){
-                    for (int j = 0; j < books.get(i).getAuthor().size(); j++) {
-                        Author author = books.get(i).getAuthor().get(j);
-                        em.persist(author);
-                    }
                     em.persist(books.get(i));
+                }else{
+                    em.merge(books.get(i));
                 }
             }
         tx.commit();
