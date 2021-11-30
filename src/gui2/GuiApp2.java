@@ -269,7 +269,7 @@ public class GuiApp2 extends javax.swing.JFrame {
         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(jButtonTakeOutBook)
-        .addContainerGap(8, Short.MAX_VALUE))
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     panelCardMain.add(cardReader, "cardReader");
