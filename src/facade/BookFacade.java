@@ -7,20 +7,25 @@ package facade;
 
 import entity.Book;
 import javax.persistence.EntityManager;
+import tools.Singleton;
 
 /**
  *
  * @author Melnikov
  */
 public class BookFacade extends AbstractFacade<Book>{
+
+    private EntityManager em;
     
     public BookFacade(Class<Book> entityClass) {
         super(entityClass);
+        Singleton singleton = Singleton.getInstance();
+        em = singleton.getEntityManager();
     }
 
     @Override
     protected EntityManager getEntityManager() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em;
     }
     
 }

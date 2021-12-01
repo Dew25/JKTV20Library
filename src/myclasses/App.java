@@ -42,15 +42,10 @@ public class App {
     private ReaderFacade readerFacade = new ReaderFacade(Reader.class);
     private AuthorFacade  authorFacade = new AuthorFacade(Author.class);
     private HistoryFacade historyFacade = new HistoryFacade(History.class);
-    private Keeping keeper;
-    private Class<Book> Book;
+
 
     public App() {
-        if(App.isBase){
-            keeper = new BaseKeeper();
-        }else{
-            keeper = new FileKeeper();
-        }
+        
 //        books = keeper.loadBooks();
 //        authors = keeper.loadAuthors();
 //        readers = keeper.loadReaders();
@@ -234,15 +229,15 @@ public class App {
             }
             if(books.get(i) != null && books.get(i).getCount() > 0){
                 System.out.printf("%d. %s. %s В наличии экземпряров: %d%n"
-                        ,i+1
+                        ,books.get(i).getId()
                         ,books.get(i).getCaption()
                         ,cbAutors.toString()
                         ,books.get(i).getCount()
                 );
-                setNumbersBooks.add(i+1);
+                setNumbersBooks.add(books.get(i).getId().intValue());
             }else if(books.get(i) != null){
                 System.out.printf("%d. %s. %s Нет наличии. Будет возварщена: %s%n"
-                        ,i+1
+                        ,books.get(i).getId()
                         ,books.get(i).getCaption()
                         ,cbAutors.toString()
                         ,getReturnDate(books.get(i))
@@ -265,15 +260,15 @@ public class App {
             }
             if(books.get(i) != null && books.get(i).getCount() >= 0){
                 System.out.printf("%d. %s. %s В наличии экземпряров: %d%n"
-                        ,i+1
+                        ,books.get(i).getId()
                         ,books.get(i).getCaption()
                         ,cbAutors.toString()
                         ,books.get(i).getCount()
                 );
-                setNumbersBooks.add(i+1);
+                setNumbersBooks.add(books.get(i).getId().intValue());
             }else if(books.get(i) != null && books.get(i).getCount() >= 0){
                 System.out.printf("%d. %s. %s Нет наличии. Будет возварщена: %s%n"
-                        ,i+1
+                        ,books.get(i).getId()
                         ,books.get(i).getCaption()
                         ,cbAutors.toString()
                         ,getReturnDate(books.get(i))

@@ -25,9 +25,9 @@ import javax.persistence.TemporalType;
 public class History implements Serializable{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     private Book book;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     private Reader reader;
     @Temporal(TemporalType.TIMESTAMP)
     private Date givenDate;
