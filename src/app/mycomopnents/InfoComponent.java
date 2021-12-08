@@ -16,9 +16,10 @@ import javax.swing.JPanel;
  *
  * @author Melnikov
  */
-public class CaptionComponent extends JPanel{
+public class InfoComponent extends JPanel{
+  private JLabel info;
 
-    public CaptionComponent(String text, int widthWindow,int heightPanel) {
+    public InfoComponent(String text, int widthWindow,int heightPanel) {
         initComponents(text, widthWindow, heightPanel);
     }
 
@@ -27,15 +28,19 @@ public class CaptionComponent extends JPanel{
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
 //        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        JLabel caption = new JLabel(text);
-        caption.setPreferredSize(new Dimension(widthWindow,heightPanel));
-        caption.setMinimumSize(caption.getPreferredSize());
-        caption.setMaximumSize(caption.getPreferredSize());
+        info = new JLabel(text);
+        info.setPreferredSize(new Dimension(widthWindow,heightPanel));
+        info.setMinimumSize(info.getPreferredSize());
+        info.setMaximumSize(info.getPreferredSize());
 //        caption.setBorder(BorderFactory.createLineBorder(Color.yellow));
-        caption.setHorizontalAlignment(JLabel.CENTER);
-        caption.setFont(new Font("Tahoma",1,16));
-        
-        this.add(caption);
+        info.setHorizontalAlignment(JLabel.CENTER);
+        info.setFont(new Font("Tahoma",0,12));
+        info.setForeground(Color.cyan);
+        this.add(info);
     }
+
+  public JLabel getInfo() {
+    return info;
+  }
     
 }
