@@ -5,7 +5,7 @@
  */
 package jktv20library;
 
-import myclasses.App;
+import app.App;
 
 /**
  *
