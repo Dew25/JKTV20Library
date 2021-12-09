@@ -8,8 +8,17 @@ package app;
 import app.mycomopnents.ButtonComponent;
 import app.mycomopnents.CaptionComponent;
 import app.mycomopnents.EditorComponent;
-import app.mycomopnents.ListAuthors;
+import app.mycomopnents.InfoComponent;
+import app.mycomopnents.ListAuthorsComponent;
+import entity.Author;
+import entity.Book;
+import facade.BookFacade;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.List;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
@@ -18,7 +27,13 @@ import javax.swing.JFrame;
  * @author Melnikov
  */
 public class GuiApp extends JFrame{
-
+    private CaptionComponent captionComponent;
+    private InfoComponent infoComponent;
+    private EditorComponent bookNameComponent;
+    private ListAuthorsComponent listAuthorsComponent;
+    private EditorComponent publishedYearComponent;
+    private EditorComponent quantityComponent;
+    private ButtonComponent buttonComponent;
     public GuiApp() {
         initComponents();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -31,22 +46,77 @@ public class GuiApp extends JFrame{
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
-        CaptionComponent captionComponent = new CaptionComponent("Добавление новой книги", this.getWidth(), 80);
+        this.add(Box.createRigidArea(new Dimension(0,15)));
+        captionComponent = new CaptionComponent("Добавление новой книги", this.getWidth(), 31);
         this.add(captionComponent);
-        EditorComponent bookNameComponent = new EditorComponent("Название книги", this.getWidth(), 31, 300);
+        infoComponent = new InfoComponent("", this.getWidth(), 31);
+        this.add(infoComponent);
+        this.add(Box.createRigidArea(new Dimension(0,10)));
+        bookNameComponent = new EditorComponent("Название книги", this.getWidth(), 31, 300);
         this.add(bookNameComponent);
-        ListAuthors listAuthors = new ListAuthors("Авторы", this.getWidth(), 120, 300);
-        this.add(listAuthors);
-        EditorComponent publishedYearComponent = new EditorComponent("Год издания", this.getWidth(), 31, 100);
+        listAuthorsComponent = new ListAuthorsComponent("Авторы", this.getWidth(), 120, 300);
+        this.add(listAuthorsComponent);
+        publishedYearComponent = new EditorComponent("Год издания", this.getWidth(), 31, 100);
         this.add(publishedYearComponent);
-        EditorComponent quantityComponent = new EditorComponent("Количество экземпляров", this.getWidth(), 31, 50);
+        quantityComponent = new EditorComponent("Количество экземпляров", this.getWidth(), 31, 50);
         this.add(quantityComponent);
-        ButtonComponent buttonComponent = new ButtonComponent("Добавить книгу", this.getWidth(), 31, 350, 150);
+        buttonComponent = new ButtonComponent("Добавить книгу", this.getWidth(), 31, 350, 150);
         this.add(buttonComponent);
+        buttonComponent.getButton().addActionListener(clickToButtonAddBook());
     }
-    
+    private ActionListener clickToButtonAddBook(){
+        return new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                /**
+                 * Создать объект book
+                 * Инициировать поля книги используя элементы компотентов
+                 * Добавить книгу в базу данных
+                 * Сообзить пользователю о результате 
+                 * если true очистить редакторы компонентов
+                 */
+                Book book = new Book();
+                if(bookNameComponent.getEditor().getText().isEmpty()){
+                    infoComponent.getInfo().setText("Введите название книги");
+                    return;
+                }
+                book.setCaption(bookNameComponent.getEditor().getText());
+                try {
+                    book.setPublishedYear(Integer.parseInt(publishedYearComponent.getEditor().getText()));
+                } catch (Exception e) {
+                    infoComponent.getInfo().setText("Год издания введите цифрами");
+                    return;
+                }
+                try {
+                    book.setQuantity(Integer.parseInt(quantityComponent.getEditor().getText()));
+                    book.setCount(book.getQuantity());
+                } catch (Exception e) {
+                    infoComponent.getInfo().setText("Количество введите цифрами");
+                    return;
+                }
+                List<Author> bookAuthors = listAuthorsComponent.getJList().getSelectedValuesList();
+                if(bookAuthors.isEmpty()){
+                    infoComponent.getInfo().setText("Вы не выбрали авторов");
+                    return;
+                }
+                book.setAuthor(bookAuthors);
+                BookFacade bookFacade = new BookFacade(Book.class);
+                try {
+                    bookFacade.create(book);
+                    infoComponent.getInfo().setText("Книга успешно добавлена");
+                    listAuthorsComponent.getJList().clearSelection();
+                    quantityComponent.getEditor().setText("");
+                    publishedYearComponent.getEditor().setText("");
+                    bookNameComponent.getEditor().setText("");
+                } catch (Exception e) {
+                    infoComponent.getInfo().setText("Книгу добавить не удалось");
+                }
+            }
+        };
+    }
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GuiApp().setVisible(true);
             }
