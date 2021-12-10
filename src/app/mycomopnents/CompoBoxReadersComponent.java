@@ -56,23 +56,19 @@ public class CompoBoxReadersComponent extends JPanel{
         caption.setMaximumSize(caption.getPreferredSize());
 //        caption.setBorder(BorderFactory.createLineBorder(Color.yellow));
         caption.setHorizontalAlignment(JLabel.RIGHT);
-        caption.setAlignmentY(TOP_ALIGNMENT);//setVerticalAlignment(JLabel.TOP);
+        caption.setAlignmentY(CENTER_ALIGNMENT);//setVerticalAlignment(JLabel.TOP);
         caption.setFont(new Font("Tahoma",0,12));
         this.add(caption);
         this.add(Box.createRigidArea(new Dimension(5, 0)));
         comboBox = new JComboBox<>();
+        comboBox.setPreferredSize(new Dimension(listWidth,27));
+        comboBox.setMaximumSize(comboBox.getPreferredSize());
+        comboBox.setMinimumSize(comboBox.getPreferredSize());
         comboBox.setModel(getListModel());
-        comboBox.setCellRenderer(createListAuthorsRenderer());
-        comboBox.setSelectionMode (ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);;
-        comboBox.setLayoutOrientation (JList.HEIGHT);
-        
-        JScrollPane scrollPane = new JScrollPane(comboBox);
-        scrollPane.setPreferredSize(new Dimension(listWidth, 120));
-        scrollPane.setMaximumSize(scrollPane.getPreferredSize());
-        scrollPane.setMinimumSize(scrollPane.getPreferredSize());
-        scrollPane.setAlignmentX(LEFT_ALIGNMENT);
-        scrollPane.setAlignmentY(TOP_ALIGNMENT);
-        this.add(scrollPane);
+        comboBox.setRenderer(createListAuthorsRenderer());
+        comboBox.setMaximumRowCount(5);
+        comboBox.setSelectedIndex(-1);
+        this.add(comboBox);
     }
 
     private ComboBoxModel<Reader> getListModel() {
@@ -85,7 +81,7 @@ public class CompoBoxReadersComponent extends JPanel{
         return defaultComboBoxModel;
     }
 
-    private ListCellRenderer<? super Author> createListAuthorsRenderer() {
+    private ListCellRenderer<? super Reader> createListAuthorsRenderer() {
       return new DefaultListCellRenderer(){
         private final Color background = new Color(0, 100, 255, 15);
         private final Color defaultBackground = (Color) UIManager.get("List.background");
@@ -95,11 +91,13 @@ public class CompoBoxReadersComponent extends JPanel{
           Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
           if(component instanceof JLabel){
               JLabel label = (JLabel) component;
-              Author author = (Author) value;
-              label.setText(String.format("%d. %s %s%n"
-                      ,author.getId()
-                      ,author.getName()
-                      ,author.getLastname()
+              Reader reader = (Reader) value;
+              if(reader == null) return component;
+              label.setText(String.format("%d. %s %s. %s%n"
+                      ,reader.getId()
+                      ,reader.getFirstname()
+                      ,reader.getLastname()
+                      ,reader.getPhone()
               ));
               if(!isSelected){
                   label.setBackground(index % 2 == 0 ? background : defaultBackground);
@@ -110,7 +108,7 @@ public class CompoBoxReadersComponent extends JPanel{
       }; 
     }
 
-    public JList<Author> getJList() {
+    public JComboBox<Reader> getComboBox() {
         return comboBox;
     }
     
