@@ -16,7 +16,8 @@ import javax.swing.JTabbedPane;
  * @author Melnikov
  */
 public class GuiApp extends JFrame{
-    
+    public static final int WITH_WINDOWS = 600;
+    public static final int HEIGHT_WINDOWS = 450;
     public GuiApp() {
         initComponents();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -25,11 +26,11 @@ public class GuiApp extends JFrame{
     
     private void initComponents() {
         this.setTitle("JPTV20 Library");
-        this.setPreferredSize(new Dimension(600,450));
+        this.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
         JTabbedPane jTabbedPane = new JTabbedPane();
-        jTabbedPane.setPreferredSize(new Dimension(600,450));
+        jTabbedPane.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
         jTabbedPane.setMinimumSize(jTabbedPane.getPreferredSize());
         jTabbedPane.setMaximumSize(jTabbedPane.getPreferredSize());
         TabManagerComponent tabReaderComponent = new TabManagerComponent(this.getWidth());

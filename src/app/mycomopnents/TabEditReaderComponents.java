@@ -10,8 +10,11 @@ import facade.ReaderFacade;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
 import javax.swing.JPanel;
 
 /**
@@ -21,12 +24,15 @@ import javax.swing.JPanel;
 public class TabEditReaderComponents extends JPanel{
     private CaptionComponent captionComponent;
     private InfoComponent infoComponent;
-    private CompoBoxReadersComponent compoBoxReadersComponent;
+    private ComboBoxModel comboBoxModel;
+    private ComboBoxReadersComponent comboBoxReadersComponent;
     private EditorComponent nameComponent;
     private EditorComponent lastNameComponent;
     private EditorComponent phoneComponent;
     private ButtonComponent buttonComponent;
-    public TabEditReaderComponents(int widthPanel) {
+    private Reader reader;
+    public TabEditReaderComponents(int widthPanel,ComboBoxModel comboBoxModel) {
+        this.comboBoxModel = comboBoxModel;
         initComponents(widthPanel);
     }
 
@@ -37,24 +43,36 @@ public class TabEditReaderComponents extends JPanel{
         this.add(captionComponent); 
         infoComponent = new InfoComponent("", widthPanel, 31);
         this.add(infoComponent);
-        compoBoxReadersComponent = new CompoBoxReadersComponent("Читатели", widthPanel, 31, 300);
-        this.add(compoBoxReadersComponent);
         this.add(Box.createRigidArea(new Dimension(0,10)));
-        nameComponent = new EditorComponent("Имя", widthPanel, 31, 300);
-        this.add(nameComponent);
-        lastNameComponent = new EditorComponent("Фамилия", widthPanel, 31, 300);
-        this.add(lastNameComponent);
         phoneComponent = new EditorComponent("Телефон", widthPanel, 31, 200);
+        lastNameComponent = new EditorComponent("Фамилия", widthPanel, 31, 300);
+        nameComponent = new EditorComponent("Имя", widthPanel, 31, 300);
+        comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30, 300);
+        comboBoxReadersComponent.getComboBox().setModel(addComboBoxModel());
+        comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
+        comboBoxReadersComponent.getComboBox().addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent ie) {
+                reader=(Reader) ie.getItem();
+                nameComponent.getEditor().setText(reader.getFirstname());
+                lastNameComponent.getEditor().setText(reader.getLastname());
+                phoneComponent.getEditor().setText(reader.getPhone());
+            }
+        });
+        this.add(comboBoxReadersComponent);
+        this.add(Box.createRigidArea(new Dimension(0,10)));
+        this.add(nameComponent);
+        this.add(lastNameComponent);
         this.add(phoneComponent);
-        buttonComponent = new ButtonComponent("Добавить читателя", widthPanel, 31, 350, 150);
+        this.add(Box.createRigidArea(new Dimension(0,10)));
+        buttonComponent = new ButtonComponent("Изменить данные читателя", widthPanel, 35, widthPanel/3+5, 200);
         this.add(buttonComponent);
-        buttonComponent.getButton().addActionListener(clickToButtonAddReader());
+        buttonComponent.getButton().addActionListener(clickToButtonEditReader());
     }
-    private ActionListener clickToButtonAddReader(){
+    private ActionListener clickToButtonEditReader(){
         return new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                Reader reader = new Reader();
                 if(nameComponent.getEditor().getText().isEmpty()){
                     infoComponent.getInfo().setText("Введите имя");
                     return;
@@ -75,16 +93,25 @@ public class TabEditReaderComponents extends JPanel{
                 ReaderFacade readerFacade = new ReaderFacade(Reader.class);
                 
                 try {
-                    readerFacade.create(reader);
-                    infoComponent.getInfo().setText("Читатель успешно добавлен");
+                    readerFacade.edit(reader);
+                    infoComponent.getInfo().setText("Читатель успешно изменен");
+                    comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
                     phoneComponent.getEditor().setText("");
                     lastNameComponent.getEditor().setText("");
                     nameComponent.getEditor().setText("");
                 } catch (Exception e) {
-                    infoComponent.getInfo().setText("Читателя добавить не удалось");
+                    infoComponent.getInfo().setText("Читателя изменить не удалось");
                 }
             }
         };
+    }
+
+    private ComboBoxModel<Reader> addComboBoxModel() {
+        nameComponent.getEditor().setText("");
+        lastNameComponent.getEditor().setText("");
+        phoneComponent.getEditor().setText("");
+        infoComponent.getInfo().setText("");
+        return comboBoxModel;
     }
     
     

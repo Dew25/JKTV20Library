@@ -5,6 +5,7 @@
  */
 package app.mycomopnents;
 
+import app.GuiApp;
 import entity.Reader;
 import facade.ReaderFacade;
 import java.awt.Dimension;
@@ -26,6 +27,9 @@ public class TabAddReaderComponents extends JPanel{
     private EditorComponent phoneComponent;
     private ButtonComponent buttonComponent;
     public TabAddReaderComponents(int widthPanel) {
+        setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-5,GuiApp.HEIGHT_WINDOWS));
+        setMinimumSize(getPreferredSize());
+        setMaximumSize(getPreferredSize());
         initComponents(widthPanel);
     }
 

@@ -5,42 +5,34 @@
  */
 package app.mycomopnents;
 
-import entity.Author;
 import entity.Reader;
-import facade.AuthorFacade;
 import facade.ReaderFacade;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.ScrollPane;
 import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 
 /**
  *
  * @author Melnikov
  */
-public class CompoBoxReadersComponent extends JPanel{
+public class ComboBoxReadersComponent extends JPanel{
     private JLabel caption;
     private JComboBox<Reader> comboBox;
 
-    public CompoBoxReadersComponent(String text, int widthWindow,int heightPanel, int listWidth) {
+    public ComboBoxReadersComponent(String text, int widthWindow,int heightPanel, int listWidth) {
         initComponents(text, widthWindow, heightPanel, listWidth);
     }
 
@@ -64,10 +56,10 @@ public class CompoBoxReadersComponent extends JPanel{
         comboBox.setPreferredSize(new Dimension(listWidth,27));
         comboBox.setMaximumSize(comboBox.getPreferredSize());
         comboBox.setMinimumSize(comboBox.getPreferredSize());
-        comboBox.setModel(getListModel());
+        //comboBox.setModel(getListModel());
         comboBox.setRenderer(createListAuthorsRenderer());
         comboBox.setMaximumRowCount(5);
-        comboBox.setSelectedIndex(-1);
+       // comboBox.setSelectedIndex(-1);
         this.add(comboBox);
     }
 
