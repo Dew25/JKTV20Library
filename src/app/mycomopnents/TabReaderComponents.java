@@ -20,6 +20,8 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -30,6 +32,7 @@ public class TabReaderComponents extends JPanel{
     private InfoComponent infoComponent;
     private ComboBoxReadersComponent comboBoxReadersComponent;
     private TabTakeOnBooksComponents tabTakeOnBooksComponents;
+    private TabReturnBooksComponents tabReturnBooksComponents;
     private ButtonComponent buttonComponent;
     private Reader reader;
     public TabReaderComponents(int widthPanel) {
@@ -40,14 +43,23 @@ public class TabReaderComponents extends JPanel{
         this.setPreferredSize(new Dimension(widthPanel,450));
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
-        JTabbedPane tabReader = new JTabbedPane();
-        tabReader.setPreferredSize(new Dimension(widthPanel-17,450));
-        tabReader.setMinimumSize(tabReader.getPreferredSize());
-        tabReader.setMaximumSize(tabReader.getPreferredSize());
-        tabReader.setAlignmentX(CENTER_ALIGNMENT);
+        JTabbedPane tabReaderTabbed = new JTabbedPane();
+        tabReaderTabbed.setPreferredSize(new Dimension(widthPanel-17,450));
+        tabReaderTabbed.setMinimumSize(tabReaderTabbed.getPreferredSize());
+        tabReaderTabbed.setMaximumSize(tabReaderTabbed.getPreferredSize());
+        tabReaderTabbed.setAlignmentX(CENTER_ALIGNMENT);
         tabTakeOnBooksComponents = new TabTakeOnBooksComponents(widthPanel);
-        tabReader.addTab("Взять книгу для чтения", tabTakeOnBooksComponents);
-        this.add(tabReader);
+        tabReaderTabbed.addTab("Взять книгу для чтения", tabTakeOnBooksComponents);
+        tabReturnBooksComponents = new TabReturnBooksComponents(widthPanel);
+        tabReaderTabbed.addTab("Возврат книги", tabReturnBooksComponents);
+        this.add(tabReaderTabbed);
+        tabReaderTabbed.addChangeListener(new ChangeListener(){
+            @Override
+            public void stateChanged(ChangeEvent ce) {
+                tabTakeOnBooksComponents.addComboBoxModel();
+            }
+            
+        });
     }
     
 }

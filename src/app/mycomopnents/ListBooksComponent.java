@@ -7,15 +7,12 @@ package app.mycomopnents;
 
 import entity.Author;
 import entity.Book;
-import facade.AuthorFacade;
 import facade.BookFacade;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.ScrollPane;
 import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
@@ -71,10 +68,17 @@ public class ListBooksComponent extends JPanel{
         scrollPane.setAlignmentY(TOP_ALIGNMENT);
         this.add(scrollPane);
     }
-
-    private ListModel<Book> getListModel() {
+    public ListModel<Book> getListModel(){
+       return getListModel(false);
+    }
+    public ListModel<Book> getListModel(boolean allBooks) {
         BookFacade bookFacade = new BookFacade(Book.class);
-        List<Book> books = bookFacade.findAll();
+        List<Book> books=null;
+        if(allBooks){
+            books = bookFacade.findAll();
+        }else{
+            books = bookFacade.fingEnabledBook();
+        }
         DefaultListModel<Book> defaultListModel = new DefaultListModel<>();
         for (Book book : books) {
             defaultListModel.addElement(book);
@@ -101,12 +105,24 @@ public class ListBooksComponent extends JPanel{
                     .append(author.getLastname())
                     .append(". ");
               }
-              label.setText(String.format("%d. %s. %s %d"
-                      ,book.getId()
-                      ,book.getCaption()
-                      ,sb.toString()
-                      ,book.getPublishedYear()
-              ));
+              if(book.getCount() > 0){
+                  label.setText(String.format("%d. %s. %s %d. В наличии %d"
+                          ,book.getId()
+                          ,book.getCaption()
+                          ,sb.toString()
+                          ,book.getPublishedYear()
+                          ,book.getCount()
+                  ));
+              }else{
+                  label.setText(String.format("%d. %s. %s %d. Нет в наличии"
+                          ,book.getId()
+                          ,book.getCaption()
+                          ,sb.toString()
+                          ,book.getPublishedYear()
+                          ,book.getCount()
+                  ));
+                  label.setForeground(Color.RED);
+              }
               if(!isSelected){
                   label.setBackground(index % 2 == 0 ? background : defaultBackground);
               }
