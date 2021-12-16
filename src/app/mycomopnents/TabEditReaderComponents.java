@@ -12,9 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 
 /**
@@ -31,8 +33,8 @@ public class TabEditReaderComponents extends JPanel{
     private EditorComponent phoneComponent;
     private ButtonComponent buttonComponent;
     private Reader reader;
-    public TabEditReaderComponents(int widthPanel,ComboBoxModel comboBoxModel) {
-        this.comboBoxModel = comboBoxModel;
+    public TabEditReaderComponents(int widthPanel) {
+//        this.comboBoxModel = comboBoxModel;
         initComponents(widthPanel);
     }
 
@@ -48,7 +50,7 @@ public class TabEditReaderComponents extends JPanel{
         lastNameComponent = new EditorComponent("Фамилия", widthPanel, 31, 300);
         nameComponent = new EditorComponent("Имя", widthPanel, 31, 300);
         comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30, 300);
-        comboBoxReadersComponent.getComboBox().setModel(addComboBoxModel());
+//        comboBoxReadersComponent.getComboBox().setModel(comboBoxModel);
         comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
         comboBoxReadersComponent.getComboBox().addItemListener(new ItemListener() {
             @Override
@@ -106,12 +108,22 @@ public class TabEditReaderComponents extends JPanel{
         };
     }
 
-    private ComboBoxModel<Reader> addComboBoxModel() {
+    public void addComboBoxModel() {
         nameComponent.getEditor().setText("");
         lastNameComponent.getEditor().setText("");
         phoneComponent.getEditor().setText("");
         infoComponent.getInfo().setText("");
-        return comboBoxModel;
+        ReaderFacade readerFacade = new ReaderFacade(Reader.class);
+        List<Reader> readers = readerFacade.findAll();
+        DefaultComboBoxModel<Reader> defaultComboBoxModel = new DefaultComboBoxModel<>();
+        for (Reader reader : readers) {
+            defaultComboBoxModel.addElement(reader);
+        }
+        comboBoxReadersComponent.getComboBox().setModel(defaultComboBoxModel);
+        comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
+        phoneComponent.getEditor().setText("");
+        lastNameComponent.getEditor().setText("");
+        nameComponent.getEditor().setText("");
     }
     
     

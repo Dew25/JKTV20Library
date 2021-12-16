@@ -47,13 +47,13 @@ public class TabDirectorComponent extends JPanel{
         TabAddReaderComponents tabAddReaderComponents = new TabAddReaderComponents(widthPanel);
         tabDirector.addTab("Добавить читателя", tabAddReaderComponents);
 //        comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30, 300);
-        TabEditReaderComponents tabEditReaderComponents = new TabEditReaderComponents(widthPanel, comboBoxModel);
+        TabEditReaderComponents tabEditReaderComponents = new TabEditReaderComponents(widthPanel);
         tabDirector.addTab("Изменить читателя", tabEditReaderComponents);
         this.add(tabDirector);
         tabDirector.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent ce) {
-                setComboBoxModel();
+                tabEditReaderComponents.addComboBoxModel();
             }
         });
     }  
