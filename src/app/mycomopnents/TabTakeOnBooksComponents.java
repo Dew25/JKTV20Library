@@ -6,13 +6,20 @@
 package app.mycomopnents;
 
 import app.GuiApp;
+import entity.Book;
+import entity.History;
 import entity.Reader;
+import facade.BookFacade;
+import facade.HistoryFacade;
 import facade.ReaderFacade;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -33,6 +40,8 @@ public class TabTakeOnBooksComponents extends JPanel{
     private ButtonComponent buttonComponent;
     private ComboBoxModel comboBoxModel;
     private Reader reader;
+    private HistoryFacade historyFacade = new HistoryFacade(History.class);
+    private BookFacade bookFacade = new BookFacade(Book.class);
     
     public TabTakeOnBooksComponents(int widthPanel) {
         setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-5,GuiApp.HEIGHT_WINDOWS));
@@ -70,21 +79,55 @@ public class TabTakeOnBooksComponents extends JPanel{
             public void itemStateChanged(ItemEvent ie) {
                 if(ie.getStateChange() == ItemEvent.SELECTED){
                     listBooksComponent.getJList().setModel(listBooksComponent.getListModel(true));
+                    buttonComponent.getButton().setEnabled(false);
+                    listBooksComponent.getJList().setEnabled(false);
                 }else{
                     listBooksComponent.getJList().setModel(listBooksComponent.getListModel(false));
+                    buttonComponent.getButton().setEnabled(true);
+                    listBooksComponent.getJList().setEnabled(true);
                 }
             }
         });
         this.add(Box.createRigidArea(new Dimension(0,10)));
         buttonComponent = new ButtonComponent("Взять книгу для чтения", widthPanel, 35, widthPanel/3+5, 300);
         this.add(buttonComponent);
-        buttonComponent.getButton().addActionListener(clickToButtonEditReader());
+        buttonComponent.getButton().addActionListener(clickToButtonTakeOnBook());
     }
-    private ActionListener clickToButtonEditReader(){
+    private ActionListener clickToButtonTakeOnBook(){
         return new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                
+                if(comboBoxReadersComponent.getComboBox().getSelectedIndex() == -1){
+                    infoComponent.getInfo().setForeground(Color.RED);
+                    infoComponent.getInfo().setText("Выберите читателя");
+                    return;
+                }
+                List<Book> books = listBooksComponent.getJList().getSelectedValuesList();
+                if(books.isEmpty()){
+                    infoComponent.getInfo().setForeground(Color.RED);
+                    infoComponent.getInfo().setText("Выберите книги");
+                    return;
+                }
+                try {
+                    for (Book book : books) {
+                        History history = new History();
+                        book.setCount(book.getCount()-1);
+                        bookFacade.edit(book);
+                        history.setBook(book);
+                        history.setReader(reader);
+                        Calendar c = new GregorianCalendar();
+                        history.setGivenDate(c.getTime());
+                        historyFacade.create(history);
+                        infoComponent.getInfo().setForeground(Color.BLUE);
+                        infoComponent.getInfo().setText("Выбранные книги выданы");
+                        comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
+                        listBooksComponent.getJList().setModel(listBooksComponent.getListModel(false));
+                        listBooksComponent.getJList().clearSelection();
+                    }
+                } catch (Exception e) {
+                    infoComponent.getInfo().setForeground(Color.RED);
+                    infoComponent.getInfo().setText("Выбранные книги выдать не удалось");
+                }
             }
         };
     }

@@ -68,9 +68,18 @@ public class ListBooksComponent extends JPanel{
         scrollPane.setAlignmentY(TOP_ALIGNMENT);
         this.add(scrollPane);
     }
+    /**
+     * Метод возвращает модель со списком доступных для выдачи книг
+     * @return объект DefaultListModel
+     */
     public ListModel<Book> getListModel(){
        return getListModel(false);
     }
+    /**
+     * Метод возвращает модель со списком книг из базы данных
+     * @param allBooks true все книги, false - только доступные к выдаче
+     * @return объект DefaultListModel
+     */
     public ListModel<Book> getListModel(boolean allBooks) {
         BookFacade bookFacade = new BookFacade(Book.class);
         List<Book> books=null;
