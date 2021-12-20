@@ -33,40 +33,68 @@ import javax.swing.UIManager;
 public class ListBooksComponent extends JPanel{
     private JLabel caption;
     private JList<Book> list;
+  
 
     public ListBooksComponent(String text, int widthWindow,int heightPanel, int listWidth) {
-        initComponents(text, widthWindow, heightPanel, listWidth);
+        initComponents(false, text, widthWindow, heightPanel, listWidth);
     }
 
-    private void initComponents(String text, int widthWindow, int heightPanel, int listWidth) {
+    public ListBooksComponent(boolean guest,String text, int widthWindow, int heightPanel, int listWidth) {
+        this.initComponents(guest, text, widthWindow, heightPanel, listWidth);
+    }
+    private void initComponents(boolean guest, String text, int widthWindow, int heightPanel, int listWidth) {
         this.setPreferredSize(new Dimension(widthWindow,heightPanel));
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        if(guest){
+            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 //        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        caption = new JLabel(text);
-        caption.setPreferredSize(new Dimension(widthWindow/3,27));
-        caption.setMinimumSize(caption.getPreferredSize());
-        caption.setMaximumSize(caption.getPreferredSize());
-//        caption.setBorder(BorderFactory.createLineBorder(Color.yellow));
-        caption.setHorizontalAlignment(JLabel.RIGHT);
-        caption.setAlignmentY(TOP_ALIGNMENT);//setVerticalAlignment(JLabel.TOP);
-        caption.setFont(new Font("Tahoma",0,12));
-        this.add(caption);
-        this.add(Box.createRigidArea(new Dimension(5, 0)));
-        list = new JList<>();
-        list.setModel(getListModel());
-        list.setCellRenderer(createListBooksRenderer());
-        list.setSelectionMode (ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);;
-        list.setLayoutOrientation (JList.HEIGHT);
+            caption = new JLabel(text);
+            caption.setPreferredSize(new Dimension(widthWindow,27));
+            caption.setMinimumSize(caption.getPreferredSize());
+            caption.setMaximumSize(caption.getPreferredSize());
+    //        caption.setBorder(BorderFactory.createLineBorder(Color.yellow));
+            caption.setHorizontalAlignment(JLabel.CENTER);
+            caption.setAlignmentY(TOP_ALIGNMENT);//setVerticalAlignment(JLabel.TOP);
+            caption.setFont(new Font("Tahoma",0,12));
+            this.add(caption);
+            this.add(Box.createRigidArea(new Dimension(5, 0)));
+            list = new JList<>();
+            list.setModel(getListModel());
+            list.setCellRenderer(createListBooksRenderer());
+            list.setSelectionMode (ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            list.setLayoutOrientation (JList.HEIGHT);
+            this.add(list);
+            
+            
+        }else{
+            this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+//        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            caption = new JLabel(text);
+            caption.setPreferredSize(new Dimension(widthWindow/3,27));
+            caption.setMinimumSize(caption.getPreferredSize());
+            caption.setMaximumSize(caption.getPreferredSize());
+    //        caption.setBorder(BorderFactory.createLineBorder(Color.yellow));
+            caption.setHorizontalAlignment(JLabel.RIGHT);
+            caption.setAlignmentY(TOP_ALIGNMENT);//setVerticalAlignment(JLabel.TOP);
+            caption.setFont(new Font("Tahoma",0,12));
+            this.add(caption);
         
-        JScrollPane scrollPane = new JScrollPane(list);
-        scrollPane.setPreferredSize(new Dimension(listWidth, 120));
-        scrollPane.setMaximumSize(scrollPane.getPreferredSize());
-        scrollPane.setMinimumSize(scrollPane.getPreferredSize());
-        scrollPane.setAlignmentX(LEFT_ALIGNMENT);
-        scrollPane.setAlignmentY(TOP_ALIGNMENT);
-        this.add(scrollPane);
+            this.add(Box.createRigidArea(new Dimension(5, 0)));
+            list = new JList<>();
+            list.setModel(getListModel());
+            list.setCellRenderer(createListBooksRenderer());
+            list.setSelectionMode (ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+            list.setLayoutOrientation (JList.HEIGHT);
+
+            JScrollPane scrollPane = new JScrollPane(list);
+            scrollPane.setPreferredSize(new Dimension(listWidth, 120));
+            scrollPane.setMaximumSize(scrollPane.getPreferredSize());
+            scrollPane.setMinimumSize(scrollPane.getPreferredSize());
+            scrollPane.setAlignmentX(LEFT_ALIGNMENT);
+            scrollPane.setAlignmentY(TOP_ALIGNMENT);
+            this.add(scrollPane);
+       }
     }
     /**
      * Метод возвращает модель со списком доступных для выдачи книг

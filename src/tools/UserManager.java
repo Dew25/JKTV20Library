@@ -19,6 +19,9 @@ public class UserManager {
     public void logout(){
         
     }
+    public void registration(){
+        
+    }
     public boolean isRole(User user, Role role){
         
         return false;

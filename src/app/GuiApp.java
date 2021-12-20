@@ -5,11 +5,13 @@
  */
 package app;
 
+import app.mycomopnents.GuestComponent;
 import app.mycomopnents.TabDirectorComponent;
 import app.mycomopnents.TabManagerComponent;
 import app.mycomopnents.TabReaderComponents;
 import java.awt.Dimension;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 /**
@@ -19,6 +21,7 @@ import javax.swing.JTabbedPane;
 public class GuiApp extends JFrame{
     public static final int WITH_WINDOWS = 600;
     public static final int HEIGHT_WINDOWS = 450;
+    private GuestComponent guestComponent;
     public GuiApp() {
         initComponents();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -30,17 +33,21 @@ public class GuiApp extends JFrame{
         this.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
-        JTabbedPane jTabbedPane = new JTabbedPane();
-        jTabbedPane.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
-        jTabbedPane.setMinimumSize(jTabbedPane.getPreferredSize());
-        jTabbedPane.setMaximumSize(jTabbedPane.getPreferredSize());
-        TabReaderComponents tabReaderComponents = new TabReaderComponents(this.getWidth());
-        jTabbedPane.addTab("Читатель", tabReaderComponents);
-        TabManagerComponent tabManagerComponent = new TabManagerComponent(this.getWidth());
-        jTabbedPane.addTab("Библиотекарь", tabManagerComponent);
-        this.getContentPane().add(jTabbedPane);
-        TabDirectorComponent tabDirectorComponent = new TabDirectorComponent(this.getWidth());
-        jTabbedPane.addTab("Директор", tabDirectorComponent);
+        guestComponent = new GuestComponent();
+        this.add(guestComponent);
+        
+//        
+//        JTabbedPane jTabbedPane = new JTabbedPane();
+//        jTabbedPane.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
+//        jTabbedPane.setMinimumSize(jTabbedPane.getPreferredSize());
+//        jTabbedPane.setMaximumSize(jTabbedPane.getPreferredSize());
+//        TabReaderComponents tabReaderComponents = new TabReaderComponents(this.getWidth());
+//        jTabbedPane.addTab("Читатель", tabReaderComponents);
+//        TabManagerComponent tabManagerComponent = new TabManagerComponent(this.getWidth());
+//        jTabbedPane.addTab("Библиотекарь", tabManagerComponent);
+//        this.getContentPane().add(jTabbedPane);
+//        TabDirectorComponent tabDirectorComponent = new TabDirectorComponent(this.getWidth());
+//        jTabbedPane.addTab("Директор", tabDirectorComponent);
         
     }
     
