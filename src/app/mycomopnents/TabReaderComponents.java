@@ -56,7 +56,12 @@ public class TabReaderComponents extends JPanel{
         tabReaderTabbed.addChangeListener(new ChangeListener(){
             @Override
             public void stateChanged(ChangeEvent ce) {
-                tabTakeOnBooksComponents.addComboBoxModel();
+                if(tabReaderTabbed.indexOfTab("Взять книгу для чтения")>0){
+                    tabTakeOnBooksComponents.addComboBoxModel();
+                }else if(tabReaderTabbed.indexOfTab("Возврат книги")>0){
+                    tabReturnBooksComponents.addComboBoxModel();
+                }
+                    
             }
             
         });

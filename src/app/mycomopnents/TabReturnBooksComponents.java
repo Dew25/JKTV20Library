@@ -6,16 +6,23 @@
 package app.mycomopnents;
 
 import app.GuiApp;
+import entity.Book;
+import entity.History;
 import entity.Reader;
+import facade.BookFacade;
+import facade.HistoryFacade;
 import facade.ReaderFacade;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 
@@ -27,13 +34,17 @@ public class TabReturnBooksComponents extends JPanel{
     private CaptionComponent captionComponent;
     private InfoComponent infoComponent;
     private ComboBoxReadersComponent comboBoxReadersComponent;
-    private ListBooksComponent listBooksComponent;
+    private ListHistoriesComponent listHistoriesComponent;
     private ButtonComponent buttonComponent;
+    private ComboBoxModel comboBoxModel;
     private Reader reader;
+    private BookFacade bookFacade = new BookFacade(Book.class);
+    private HistoryFacade historyFacade = new HistoryFacade(History.class);
     public TabReturnBooksComponents(int widthPanel) {
         setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-5,GuiApp.HEIGHT_WINDOWS));
         setMinimumSize(getPreferredSize());
         setMaximumSize(getPreferredSize());
+        setComboBoxModel();
         initComponents(widthPanel);
     }
     private void initComponents(int widthPanel) {
@@ -44,19 +55,20 @@ public class TabReturnBooksComponents extends JPanel{
         infoComponent = new InfoComponent("", widthPanel, 31);
         this.add(infoComponent);
         this.add(Box.createRigidArea(new Dimension(0,10)));
+        listHistoriesComponent = new ListHistoriesComponent("Читаемые книги", widthPanel, 120, 300);
         comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30, 300);
-//        comboBoxReadersComponent.getComboBox().setModel(comboBoxModel);
+        comboBoxReadersComponent.getComboBox().setModel(comboBoxModel);
         comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
         comboBoxReadersComponent.getComboBox().addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent ie) {
                 reader=(Reader) ie.getItem();
+                listHistoriesComponent.getJList().setModel(listHistoriesComponent.getListModel(reader));
             }
         });
         this.add(comboBoxReadersComponent);
         this.add(Box.createRigidArea(new Dimension(0,10)));
-        listBooksComponent = new ListBooksComponent("Читаемые книги", widthPanel, 120, 300);
-        this.add(listBooksComponent);
+        this.add(listHistoriesComponent);
         this.add(Box.createRigidArea(new Dimension(0,10)));
         buttonComponent = new ButtonComponent("Вернуть книги", widthPanel, 35, widthPanel/3+5, 300);
         this.add(buttonComponent);
@@ -66,24 +78,46 @@ public class TabReturnBooksComponents extends JPanel{
         return new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                
+                if(comboBoxReadersComponent.getComboBox().getSelectedIndex() == -1){
+                    infoComponent.getInfo().setForeground(Color.RED);
+                    infoComponent.getInfo().setText("Выберите читателя");
+                    return;
+                }
+                List<History> histories = listHistoriesComponent.getJList().getSelectedValuesList();
+                if(histories.isEmpty()){
+                    infoComponent.getInfo().setForeground(Color.RED);
+                    infoComponent.getInfo().setText("Выберите возвращаемые книги");
+                    return;
+                }
+                for (History history : histories) {
+                    Book book = history.getBook();
+                    book.setCount(book.getCount() + 1);
+                    bookFacade.edit(book);
+                    history.setReturnDate(new GregorianCalendar().getTime());
+                    historyFacade.edit(history);
+                    comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
+                    listHistoriesComponent.getJList().setModel(listHistoriesComponent.getListModel());
+                    infoComponent.getInfo().setForeground(Color.BLUE);
+                    infoComponent.getInfo().setText("Выберанные книги возвращены");
+                }
             }
         };
     }
 
-    public void addComboBoxModel() {
-        infoComponent.getInfo().setText("");
+    private void setComboBoxModel(){
         ReaderFacade readerFacade = new ReaderFacade(Reader.class);
         List<Reader> readers = readerFacade.findAll();
         DefaultComboBoxModel<Reader> defaultComboBoxModel = new DefaultComboBoxModel<>();
         for (Reader reader : readers) {
             defaultComboBoxModel.addElement(reader);
         }
-        comboBoxReadersComponent.getComboBox().setModel(defaultComboBoxModel);
-        comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
-        
+        comboBoxModel=defaultComboBoxModel;
     }
-    
+    public void addComboBoxModel() {
+        infoComponent.getInfo().setText("");
+        setComboBoxModel();
+        comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
+    }
     
     
 }

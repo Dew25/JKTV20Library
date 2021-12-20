@@ -7,6 +7,7 @@ package facade;
 
 import entity.Book;
 import entity.History;
+import entity.Reader;
 import java.util.List;
 import javax.persistence.EntityManager;
 import tools.Singleton;
@@ -41,6 +42,12 @@ public class HistoryFacade extends AbstractFacade<History>{
         return getEntityManager().createQuery(
                 "SELECT h FROM History h WHERE h.returnDate = null"
         ).getResultList();
+    }
+
+    public List<History> findAll(Reader reader) {
+        return getEntityManager().createQuery("SELECT h FROM History h WHERE h.reader = :reader AND h.returnDate = null")
+                .setParameter("reader", reader)
+                .getResultList();
     }
 
     
