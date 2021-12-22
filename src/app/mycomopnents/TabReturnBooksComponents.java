@@ -38,8 +38,8 @@ public class TabReturnBooksComponents extends JPanel{
     private ButtonComponent buttonComponent;
     private ComboBoxModel comboBoxModel;
     private Reader reader;
-    private BookFacade bookFacade = new BookFacade(Book.class);
-    private HistoryFacade historyFacade = new HistoryFacade(History.class);
+    private BookFacade bookFacade = new BookFacade();
+    private HistoryFacade historyFacade = new HistoryFacade();
     public TabReturnBooksComponents(int widthPanel) {
         setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-5,GuiApp.HEIGHT_WINDOWS));
         setMinimumSize(getPreferredSize());
@@ -105,7 +105,7 @@ public class TabReturnBooksComponents extends JPanel{
     }
 
     private void setComboBoxModel(){
-        ReaderFacade readerFacade = new ReaderFacade(Reader.class);
+        ReaderFacade readerFacade = new ReaderFacade();
         List<Reader> readers = readerFacade.findAll();
         DefaultComboBoxModel<Reader> defaultComboBoxModel = new DefaultComboBoxModel<>();
         for (Reader reader : readers) {

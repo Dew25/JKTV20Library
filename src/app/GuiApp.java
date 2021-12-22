@@ -11,9 +11,18 @@ import app.mycomopnents.TabAddReaderComponents;
 import app.mycomopnents.TabDirectorComponent;
 import app.mycomopnents.TabManagerComponent;
 import app.mycomopnents.TabReaderComponents;
+import entity.Reader;
+import entity.Role;
+import entity.User;
+import entity.UserRoles;
+import facade.ReaderFacade;
+import facade.RoleFacade;
+import facade.UserFacade;
+import facade.UserRolesFacade;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,7 +39,47 @@ public class GuiApp extends JFrame{
     private GuestButtonsComponent guestButtonsComponent;
     private TabAddReaderComponents tabAddReaderComponents;
     private  GuiApp guiApp = this;
+    private UserFacade userFacade = new UserFacade();
+    private ReaderFacade readerFacade = new ReaderFacade();
+    private RoleFacade roleFacade = new RoleFacade();
+    private UserRolesFacade userRolesFacade = new UserRolesFacade();
+    
     public GuiApp() {
+        List<User> users = userFacade.findAll();
+        if(users.isEmpty()){
+            User user = new User();
+            user.setLogin("admin");
+            user.setPassword("12345");
+            Reader reader = new Reader();
+            reader.setFirstname("admin");
+            reader.setLastname("admin");
+            reader.setPhone("565456545");
+            readerFacade.create(reader);
+            user.setReader(reader);
+            userFacade.create(user);
+            Role role = new Role();
+            role.setRoleName("ADMINISTRATOR");
+            roleFacade.create(role);
+            UserRoles userRoles = new UserRoles();
+            userRoles.setUser(user);
+            userRoles.setRole(role);
+            userRolesFacade.create(userRoles);
+            role = new Role();
+            role.setRoleName("MANAGER");
+            roleFacade.create(role);
+            userRoles = new UserRoles();
+            userRoles.setUser(user);
+            userRoles.setRole(role);
+            userRolesFacade.create(userRoles);
+            role = new Role();
+            role.setRoleName("READER");
+            roleFacade.create(role);
+            userRoles = new UserRoles();
+            userRoles.setUser(user);
+            userRoles.setRole(role);
+            userRolesFacade.create(userRoles);
+            
+        }
         initComponents();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
