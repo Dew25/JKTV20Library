@@ -5,11 +5,16 @@
  */
 package app;
 
+import app.mycomopnents.GuestButtonsComponent;
 import app.mycomopnents.GuestComponent;
+import app.mycomopnents.TabAddReaderComponents;
 import app.mycomopnents.TabDirectorComponent;
 import app.mycomopnents.TabManagerComponent;
 import app.mycomopnents.TabReaderComponents;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -22,6 +27,9 @@ public class GuiApp extends JFrame{
     public static final int WITH_WINDOWS = 600;
     public static final int HEIGHT_WINDOWS = 450;
     private GuestComponent guestComponent;
+    private GuestButtonsComponent guestButtonsComponent;
+    private TabAddReaderComponents tabAddReaderComponents;
+    private  GuiApp guiApp = this;
     public GuiApp() {
         initComponents();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -33,7 +41,26 @@ public class GuiApp extends JFrame{
         this.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
+        this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         guestComponent = new GuestComponent();
+        guestButtonsComponent = new GuestButtonsComponent("Войти", "Зарегистрироваться", GuiApp.WITH_WINDOWS, 50,100,10,200);
+        this.add(guestButtonsComponent);
+        guestButtonsComponent.getButton1().addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                
+            }
+        });
+        guestButtonsComponent.getButton2().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                guiApp.getContentPane().remove(guestComponent);
+                tabAddReaderComponents = new TabAddReaderComponents(GuiApp.WITH_WINDOWS);
+                guiApp.getContentPane().add(tabAddReaderComponents);
+                guiApp.repaint();
+                guiApp.revalidate();
+            }
+        });
         this.add(guestComponent);
         
 //        

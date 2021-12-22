@@ -7,6 +7,7 @@ package app.mycomopnents;
 
 import app.GuiApp;
 import java.awt.Dimension;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 /**
@@ -15,19 +16,31 @@ import javax.swing.JPanel;
  */
 public class GuestComponent extends JPanel{
     private ListBooksComponent listBooksComponent;
-    private GuestButtonsComponent guestButtonsComponent;
+   
     public GuestComponent() {
-        setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS,GuiApp.HEIGHT_WINDOWS));
+        setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS,GuiApp.HEIGHT_WINDOWS-100));
         setMinimumSize(getPreferredSize());
         setMaximumSize(getPreferredSize());
         initComponents();
     }
 
     private void initComponents() {
-        listBooksComponent = new ListBooksComponent(true,"Книги", GuiApp.WITH_WINDOWS,GuiApp.HEIGHT_WINDOWS,GuiApp.WITH_WINDOWS);
+//        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        listBooksComponent = new ListBooksComponent(true,"Список книг библиотеки", GuiApp.WITH_WINDOWS,GuiApp.HEIGHT_WINDOWS-100,GuiApp.WITH_WINDOWS-20);
+//        listBooksComponent.getJList().setModel(listBooksComponent.getListModel(true));
+//        listBooksComponent.getJList().setCellRenderer(listBooksComponent.createListBooksRenderer());
         this.add(listBooksComponent);
-        guestButtonsComponent = new GuestButtonsComponent("Войти", "Зарегистрироваться", GuiApp.WITH_WINDOWS, 50,200,10,250);
-        this.add(guestButtonsComponent);
+        
+        
     }
+
+    public ListBooksComponent getListBooksComponent() {
+        return listBooksComponent;
+    }
+
+   
+
+   
+
     
 }
