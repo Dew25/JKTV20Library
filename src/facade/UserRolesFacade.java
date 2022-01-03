@@ -5,7 +5,10 @@
  */
 package facade;
 
+import entity.Role;
+import entity.User;
 import entity.UserRoles;
+import java.util.List;
 import javax.persistence.EntityManager;
 import tools.Singleton;
 
@@ -25,5 +28,25 @@ public class UserRolesFacade extends AbstractFacade<UserRoles>{
     protected EntityManager getEntityManager() {
         return em;
     }
+
+  public String getTopRole(User user) {
+    try {
+      List<String> userRoles = em.createQuery("SELECT ur.role.roleName FROM UserRoles ur WHERE ur.user = :user")
+              .setParameter("user", user)
+              .getResultList();
+        if(userRoles.contains("ADMINISTRATOR")){
+          return "ADMINISTRATOR";
+        }else
+        if(userRoles.contains("MANAGER")){
+          return "MANAGER";
+        }else
+        if(userRoles.contains("READER")){
+          return "READER";
+        }else
+          return null;
+    } catch (Exception e) {
+      return null;
+    }
+  }
     
 }

@@ -20,6 +20,7 @@ import javax.swing.JTextField;
  */
 public class GuestButtonsComponent extends JPanel{
     private JLabel caption;
+    private InfoComponent infoComponent;
     private JButton button1;
     private JButton button2;
     /**
@@ -52,6 +53,8 @@ public class GuestButtonsComponent extends JPanel{
         button2.setMaximumSize(button2.getPreferredSize());
         button2.setMinimumSize(button2.getPreferredSize());
         this.add(button2);
+        infoComponent = new InfoComponent("", widthWindow, 27);
+        this.add(infoComponent);
     }
 
     public JButton getButton1() {
@@ -59,5 +62,8 @@ public class GuestButtonsComponent extends JPanel{
     }
     public JButton getButton2() {
         return button2;
+    }
+    public InfoComponent getInfoComponent(){
+        return infoComponent;
     }
 }

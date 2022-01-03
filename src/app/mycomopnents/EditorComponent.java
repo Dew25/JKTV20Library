@@ -23,17 +23,22 @@ public class EditorComponent extends JPanel{
     private JTextField editor;
     
     public EditorComponent(String text, int widthWindow,int heightPanel, int editorWidth) {
-        initComponents(text, widthWindow, heightPanel, editorWidth);
+        int left = 0;
+        initComponents(text, widthWindow, heightPanel, left, editorWidth);
     }
-
-    private void initComponents(String text, int widthWindow, int heightPanel, int editorWidth) {
+    public EditorComponent(String text, int widthWindow,int heightPanel, int left, int editorWidth) {
+        initComponents(text, widthWindow, heightPanel, left, editorWidth);
+    }
+    
+    private void initComponents(String text, int widthWindow, int heightPanel,int left, int editorWidth) {
+        if(left == 0) left = widthWindow/3;
         this.setPreferredSize(new Dimension(widthWindow,heightPanel));
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 //        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         caption = new JLabel(text);
-        caption.setPreferredSize(new Dimension(widthWindow/3,heightPanel));
+        caption.setPreferredSize(new Dimension(left,heightPanel));
         caption.setMinimumSize(caption.getPreferredSize());
         caption.setMaximumSize(caption.getPreferredSize());
 //        caption.setBorder(BorderFactory.createLineBorder(Color.yellow));

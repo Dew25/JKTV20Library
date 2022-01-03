@@ -14,7 +14,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.List;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
@@ -38,22 +37,23 @@ public class ListBooksComponent extends JPanel{
   
 
     public ListBooksComponent(String text, int widthWindow,int heightPanel, int listWidth) {
-        initComponents(false, text, widthWindow, heightPanel, listWidth);
+        initComponents(false, text, widthWindow, heightPanel, 0, listWidth);
     }
 
-    public ListBooksComponent(boolean guest,String text, int widthWindow, int heightPanel, int listWidth) {
+    public ListBooksComponent(boolean guest,String text, int widthWindow, int heightPanel, int left, int listWidth) {
         
-        this.initComponents(guest, text, widthWindow, heightPanel, listWidth);
+        this.initComponents(guest, text, widthWindow, heightPanel, left, listWidth);
     }
-    private void initComponents(boolean guest, String text, int widthWindow, int heightPanel, int listWidth) {
-        this.setPreferredSize(new Dimension(widthWindow-25,heightPanel));
+    private void initComponents(boolean guest, String text, int widthWindow, int heightPanel, int left, int listWidth) {
+      if(left == 0)left = widthWindow/3;
+      this.setPreferredSize(new Dimension(widthWindow-25,heightPanel));
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
         if(guest){
             this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 //        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             caption = new JLabel(text);
-            caption.setPreferredSize(new Dimension(widthWindow,37));
+            caption.setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-25,37));
             caption.setMinimumSize(caption.getPreferredSize());
             caption.setMaximumSize(caption.getPreferredSize());
     //        caption.setBorder(BorderFactory.createLineBorder(Color.yellow));
@@ -61,7 +61,7 @@ public class ListBooksComponent extends JPanel{
             caption.setAlignmentY(TOP_ALIGNMENT);//setVerticalAlignment(JLabel.TOP);
             caption.setFont(new Font("Tahoma",0,12));
             this.add(caption);
-            this.add(Box.createRigidArea(new Dimension(5, 0)));
+            this.add(Box.createRigidArea(new Dimension(0, 5)));
             list = new JList<>();
             list.setModel(getListModel());
             list.setCellRenderer(createListBooksRenderer());
@@ -74,12 +74,11 @@ public class ListBooksComponent extends JPanel{
             scrollPane.setAlignmentX(LEFT_ALIGNMENT);
             scrollPane.setAlignmentY(TOP_ALIGNMENT);
             this.add(scrollPane);
-            
         }else{
             this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 //        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             caption = new JLabel(text);
-            caption.setPreferredSize(new Dimension(widthWindow/3,27));
+            caption.setPreferredSize(new Dimension(left,27));
             caption.setMinimumSize(caption.getPreferredSize());
             caption.setMaximumSize(caption.getPreferredSize());
     //        caption.setBorder(BorderFactory.createLineBorder(Color.yellow));
@@ -94,10 +93,8 @@ public class ListBooksComponent extends JPanel{
             list.setCellRenderer(createListBooksRenderer());
             list.setSelectionMode (ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
             list.setLayoutOrientation (JList.HEIGHT);
-       
-
             JScrollPane scrollPane = new JScrollPane(list);
-            scrollPane.setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-25, 120));
+            scrollPane.setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-25, heightPanel));
             scrollPane.setMaximumSize(scrollPane.getPreferredSize());
             scrollPane.setMinimumSize(scrollPane.getPreferredSize());
             scrollPane.setAlignmentX(LEFT_ALIGNMENT);

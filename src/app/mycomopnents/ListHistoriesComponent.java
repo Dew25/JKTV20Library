@@ -36,17 +36,21 @@ public class ListHistoriesComponent extends JPanel{
     private JList<History> list;
 
     public ListHistoriesComponent(String text, int widthWindow,int heightPanel, int listWidth) {
-        initComponents(text, widthWindow, heightPanel, listWidth);
+        initComponents(text, widthWindow, heightPanel, 0, listWidth);
+    }
+    public ListHistoriesComponent(String text, int widthWindow,int heightPanel,int left, int listWidth) {
+      if(left == 0) left = widthWindow/3;  
+      initComponents(text, widthWindow, heightPanel, left, listWidth);
     }
 
-    private void initComponents(String text, int widthWindow, int heightPanel, int listWidth) {
+    private void initComponents(String text, int widthWindow, int heightPanel, int left, int listWidth) {
         this.setPreferredSize(new Dimension(widthWindow,heightPanel));
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 //        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         caption = new JLabel(text);
-        caption.setPreferredSize(new Dimension(widthWindow/3,27));
+        caption.setPreferredSize(new Dimension(left,27));
         caption.setMinimumSize(caption.getPreferredSize());
         caption.setMaximumSize(caption.getPreferredSize());
 //        caption.setBorder(BorderFactory.createLineBorder(Color.yellow));

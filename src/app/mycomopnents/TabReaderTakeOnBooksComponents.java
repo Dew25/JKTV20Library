@@ -32,7 +32,7 @@ import javax.swing.JPanel;
  *
  * @author Melnikov
  */
-public class TabTakeOnBooksComponents extends JPanel{
+public class TabReaderTakeOnBooksComponents extends JPanel{
     private CaptionComponent captionComponent;
     private InfoComponent infoComponent;
     private ComboBoxReadersComponent comboBoxReadersComponent;
@@ -43,7 +43,7 @@ public class TabTakeOnBooksComponents extends JPanel{
     private HistoryFacade historyFacade = new HistoryFacade();
     private BookFacade bookFacade = new BookFacade();
     
-    public TabTakeOnBooksComponents(int widthPanel) {
+    public TabReaderTakeOnBooksComponents(int widthPanel) {
         setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-5,GuiApp.HEIGHT_WINDOWS));
         setMinimumSize(getPreferredSize());
         setMaximumSize(getPreferredSize());
@@ -58,21 +58,21 @@ public class TabTakeOnBooksComponents extends JPanel{
         infoComponent = new InfoComponent("", widthPanel, 31);
         this.add(infoComponent);
         this.add(Box.createRigidArea(new Dimension(0,10)));
-        comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30, 300);
-        comboBoxReadersComponent.getComboBox().setModel(comboBoxModel);
-        comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
-        comboBoxReadersComponent.getComboBox().addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent ie) {
-                reader=(Reader) ie.getItem();
-            }
-        });
-        this.add(comboBoxReadersComponent);
-        this.add(Box.createRigidArea(new Dimension(0,10)));
+//        comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30,120, 350);
+//        comboBoxReadersComponent.getComboBox().setModel(comboBoxModel);
+//        comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
+//        comboBoxReadersComponent.getComboBox().addItemListener(new ItemListener() {
+//            @Override
+//            public void itemStateChanged(ItemEvent ie) {
+//                reader=(Reader) ie.getItem();
+//            }
+//        });
+//        this.add(comboBoxReadersComponent);
+//        this.add(Box.createRigidArea(new Dimension(0,10)));
         JCheckBox checkBoxAllBooks = new JCheckBox("Показать все книги");
         this.add(checkBoxAllBooks);
-        this.add(Box.createRigidArea(new Dimension(0,10)));
-        listBooksComponent = new ListBooksComponent("Книги", widthPanel, 120, 300);
+//        this.add(Box.createRigidArea(new Dimension(0,10)));
+        listBooksComponent = new ListBooksComponent(true, "Книги", widthPanel, 120, 80, 350);
         this.add(listBooksComponent);
         checkBoxAllBooks.addItemListener(new ItemListener() {
             @Override
@@ -89,7 +89,7 @@ public class TabTakeOnBooksComponents extends JPanel{
             }
         });
         this.add(Box.createRigidArea(new Dimension(0,10)));
-        buttonComponent = new ButtonComponent("Взять книгу для чтения", widthPanel, 35, widthPanel/3+5, 300);
+        buttonComponent = new ButtonComponent("Взять книгу для чтения", widthPanel, 35, 120, 300);
         this.add(buttonComponent);
         buttonComponent.getButton().addActionListener(clickToButtonTakeOnBook());
     }

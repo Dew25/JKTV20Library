@@ -30,7 +30,7 @@ import javax.swing.JPanel;
  *
  * @author Melnikov
  */
-public class TabReturnBooksComponents extends JPanel{
+public class TabReaderReturnBooksComponents extends JPanel{
     private CaptionComponent captionComponent;
     private InfoComponent infoComponent;
     private ComboBoxReadersComponent comboBoxReadersComponent;
@@ -40,7 +40,7 @@ public class TabReturnBooksComponents extends JPanel{
     private Reader reader;
     private BookFacade bookFacade = new BookFacade();
     private HistoryFacade historyFacade = new HistoryFacade();
-    public TabReturnBooksComponents(int widthPanel) {
+    public TabReaderReturnBooksComponents(int widthPanel) {
         setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-5,GuiApp.HEIGHT_WINDOWS));
         setMinimumSize(getPreferredSize());
         setMaximumSize(getPreferredSize());
@@ -55,8 +55,8 @@ public class TabReturnBooksComponents extends JPanel{
         infoComponent = new InfoComponent("", widthPanel, 31);
         this.add(infoComponent);
         this.add(Box.createRigidArea(new Dimension(0,10)));
-        listHistoriesComponent = new ListHistoriesComponent("Читаемые книги", widthPanel, 120, 300);
-        comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30, 300);
+        listHistoriesComponent = new ListHistoriesComponent("Читаемые книги", widthPanel, 120,120, 300);
+        comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30,120, 300);
         comboBoxReadersComponent.getComboBox().setModel(comboBoxModel);
         comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
         comboBoxReadersComponent.getComboBox().addItemListener(new ItemListener() {
@@ -70,7 +70,7 @@ public class TabReturnBooksComponents extends JPanel{
         this.add(Box.createRigidArea(new Dimension(0,10)));
         this.add(listHistoriesComponent);
         this.add(Box.createRigidArea(new Dimension(0,10)));
-        buttonComponent = new ButtonComponent("Вернуть книги", widthPanel, 35, widthPanel/3+5, 300);
+        buttonComponent = new ButtonComponent("Вернуть книги", widthPanel, 35, 100, 300);
         this.add(buttonComponent);
         buttonComponent.getButton().addActionListener(clickToButtonReturnBooks());
     }

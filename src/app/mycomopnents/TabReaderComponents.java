@@ -31,8 +31,8 @@ public class TabReaderComponents extends JPanel{
     private CaptionComponent captionComponent;
     private InfoComponent infoComponent;
     private ComboBoxReadersComponent comboBoxReadersComponent;
-    private TabTakeOnBooksComponents tabTakeOnBooksComponents;
-    private TabReturnBooksComponents tabReturnBooksComponents;
+    private TabReaderTakeOnBooksComponents tabTakeOnBooksComponents;
+    private TabReaderReturnBooksComponents tabReturnBooksComponents;
     private ButtonComponent buttonComponent;
     private Reader reader;
     public TabReaderComponents(int widthPanel) {
@@ -48,9 +48,9 @@ public class TabReaderComponents extends JPanel{
         tabReaderTabbed.setMinimumSize(tabReaderTabbed.getPreferredSize());
         tabReaderTabbed.setMaximumSize(tabReaderTabbed.getPreferredSize());
         tabReaderTabbed.setAlignmentX(CENTER_ALIGNMENT);
-        tabTakeOnBooksComponents = new TabTakeOnBooksComponents(widthPanel);
+        tabTakeOnBooksComponents = new TabReaderTakeOnBooksComponents(widthPanel);
         tabReaderTabbed.addTab("Взять книгу для чтения", tabTakeOnBooksComponents);
-        tabReturnBooksComponents = new TabReturnBooksComponents(widthPanel);
+        tabReturnBooksComponents = new TabReaderReturnBooksComponents(widthPanel);
         tabReaderTabbed.addTab("Возврат книги", tabReturnBooksComponents);
         this.add(tabReaderTabbed);
         tabReaderTabbed.addChangeListener(new ChangeListener(){
