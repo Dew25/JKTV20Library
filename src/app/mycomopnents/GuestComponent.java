@@ -5,6 +5,7 @@
  */
 package app.mycomopnents;
 
+import app.mycomopnents.lists.ListBooksComponent;
 import app.GuiApp;
 import java.awt.Dimension;
 import javax.swing.JPanel;

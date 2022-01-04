@@ -3,8 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomopnents;
+package app.mycomopnents.director;
 
+import app.mycomopnents.ButtonComponent;
+import app.mycomopnents.CaptionComponent;
+import app.mycomopnents.ComboBoxReadersComponent;
+import app.mycomopnents.EditorComponent;
+import app.mycomopnents.InfoComponent;
+import app.mycomopnents.director.TabEditReaderComponents;
 import entity.Reader;
 import facade.ReaderFacade;
 import java.awt.Dimension;

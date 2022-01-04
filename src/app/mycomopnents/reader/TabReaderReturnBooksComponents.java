@@ -3,9 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomopnents;
+package app.mycomopnents.reader;
 
 import app.GuiApp;
+import app.mycomopnents.ButtonComponent;
+import app.mycomopnents.CaptionComponent;
+import app.mycomopnents.ComboBoxReadersComponent;
+import app.mycomopnents.InfoComponent;
+import app.mycomopnents.lists.ListHistoriesComponent;
 import entity.Book;
 import entity.History;
 import entity.Reader;
@@ -41,9 +46,9 @@ public class TabReaderReturnBooksComponents extends JPanel{
     private BookFacade bookFacade = new BookFacade();
     private HistoryFacade historyFacade = new HistoryFacade();
     public TabReaderReturnBooksComponents(int widthPanel) {
-        setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-5,GuiApp.HEIGHT_WINDOWS));
-        setMinimumSize(getPreferredSize());
-        setMaximumSize(getPreferredSize());
+        super.setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-5,GuiApp.HEIGHT_WINDOWS));
+        super.setMinimumSize(getPreferredSize());
+        super.setMaximumSize(getPreferredSize());
         setComboBoxModel();
         initComponents(widthPanel);
     }
@@ -55,8 +60,8 @@ public class TabReaderReturnBooksComponents extends JPanel{
         infoComponent = new InfoComponent("", widthPanel, 31);
         this.add(infoComponent);
         this.add(Box.createRigidArea(new Dimension(0,10)));
-        listHistoriesComponent = new ListHistoriesComponent("Читаемые книги", widthPanel, 120,120, 300);
-        comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30,120, 300);
+        listHistoriesComponent = new ListHistoriesComponent("Читаемые книги", widthPanel, 120,120, 350);
+        comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30,120, 350);
         comboBoxReadersComponent.getComboBox().setModel(comboBoxModel);
         comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
         comboBoxReadersComponent.getComboBox().addItemListener(new ItemListener() {
@@ -70,7 +75,7 @@ public class TabReaderReturnBooksComponents extends JPanel{
         this.add(Box.createRigidArea(new Dimension(0,10)));
         this.add(listHistoriesComponent);
         this.add(Box.createRigidArea(new Dimension(0,10)));
-        buttonComponent = new ButtonComponent("Вернуть книги", widthPanel, 35, 100, 300);
+        buttonComponent = new ButtonComponent("Вернуть книги", widthPanel, 35, 150, 300);
         this.add(buttonComponent);
         buttonComponent.getButton().addActionListener(clickToButtonReturnBooks());
     }

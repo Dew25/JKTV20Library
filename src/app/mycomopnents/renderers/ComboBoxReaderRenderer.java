@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomopnents.director;
+package app.mycomopnents.renderers;
 
 import entity.Reader;
 import java.awt.Color;
@@ -16,20 +16,21 @@ import javax.swing.ListCellRenderer;
  *
  * @author jvm
  */
-class ComboBoxRenderer  extends JLabel implements ListCellRenderer{
+public class ComboBoxReaderRenderer  extends JLabel implements ListCellRenderer{
     
   private boolean colorSet;
     private Color selectionBackgroundColor;
 
-    public ComboBoxRenderer()
+    public ComboBoxReaderRenderer()
     {
-        setOpaque(true);
-        setHorizontalAlignment(LEFT);
-        setVerticalAlignment(CENTER);
+        super.setOpaque(true);
+        super.setHorizontalAlignment(LEFT);
+        super.setVerticalAlignment(CENTER);
         colorSet = false;
         selectionBackgroundColor = Color.red; // Have to set a color, else a compiler error will occur
     }
 
+  @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)
     {
         // Check if color is set (only runs the first time)

@@ -3,9 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomopnents;
+package app.mycomopnents.reader;
 
 import app.GuiApp;
+import app.mycomopnents.ButtonComponent;
+import app.mycomopnents.CaptionComponent;
+import app.mycomopnents.ComboBoxReadersComponent;
+import app.mycomopnents.GuestComponent;
+import app.mycomopnents.InfoComponent;
+import app.mycomopnents.lists.ListBooksComponent;
 import entity.Book;
 import entity.History;
 import entity.Reader;
@@ -21,6 +27,7 @@ import java.awt.event.ItemListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ComboBoxModel;
@@ -36,60 +43,58 @@ public class TabReaderTakeOnBooksComponents extends JPanel{
     private CaptionComponent captionComponent;
     private InfoComponent infoComponent;
     private ComboBoxReadersComponent comboBoxReadersComponent;
-    private ListBooksComponent listBooksComponent;
+    private GuestComponent guestComponent;
     private ButtonComponent buttonComponent;
-    private ComboBoxModel comboBoxModel;
+    private ComboBoxModel<Reader> comboBoxModel;
     private Reader reader;
     private HistoryFacade historyFacade = new HistoryFacade();
     private BookFacade bookFacade = new BookFacade();
     
-    public TabReaderTakeOnBooksComponents(int widthPanel) {
-        setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-5,GuiApp.HEIGHT_WINDOWS));
-        setMinimumSize(getPreferredSize());
-        setMaximumSize(getPreferredSize());
+    public TabReaderTakeOnBooksComponents() {
+        super.setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-5,GuiApp.HEIGHT_WINDOWS));
+        super.setMinimumSize(getPreferredSize());
+        super.setMaximumSize(getPreferredSize());
+        
         setComboBoxModel();
-        initComponents(widthPanel);
+        initComponents();
     }
-    private void initComponents(int widthPanel) {
+    private void initComponents() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.add(Box.createRigidArea(new Dimension(0,15)));
-        captionComponent = new CaptionComponent("Выбор книги", widthPanel, 31);
-        this.add(captionComponent); 
-        infoComponent = new InfoComponent("", widthPanel, 31);
-        this.add(infoComponent);
+        this.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+        
         this.add(Box.createRigidArea(new Dimension(0,10)));
-//        comboBoxReadersComponent = new ComboBoxReadersComponent("Читатели", widthPanel, 30,120, 350);
-//        comboBoxReadersComponent.getComboBox().setModel(comboBoxModel);
-//        comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
-//        comboBoxReadersComponent.getComboBox().addItemListener(new ItemListener() {
-//            @Override
-//            public void itemStateChanged(ItemEvent ie) {
-//                reader=(Reader) ie.getItem();
-//            }
-//        });
-//        this.add(comboBoxReadersComponent);
-//        this.add(Box.createRigidArea(new Dimension(0,10)));
+        captionComponent = new CaptionComponent("Выбор книги", GuiApp.WITH_WINDOWS, 31);
+        captionComponent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        this.add(captionComponent); 
+        infoComponent = new InfoComponent("", GuiApp.WITH_WINDOWS, 31);
+        infoComponent.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        this.add(infoComponent);
+        this.add(Box.createRigidArea(new Dimension(0,5)));
+
         JCheckBox checkBoxAllBooks = new JCheckBox("Показать все книги");
         this.add(checkBoxAllBooks);
-//        this.add(Box.createRigidArea(new Dimension(0,10)));
-        listBooksComponent = new ListBooksComponent(true, "Книги", widthPanel, 120, 80, 350);
-        this.add(listBooksComponent);
+        checkBoxAllBooks.setBorder(BorderFactory.createLineBorder(Color.yellow));
+        checkBoxAllBooks.setBorderPainted(true);
+        guestComponent = new GuestComponent();
+        guestComponent.setBorder(BorderFactory.createLineBorder(Color.RED));
+        
+        this.add(guestComponent);
         checkBoxAllBooks.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent ie) {
                 if(ie.getStateChange() == ItemEvent.SELECTED){
-                    listBooksComponent.getJList().setModel(listBooksComponent.getListModel(true));
+                    guestComponent.getListBooksComponent().getJList().setModel(guestComponent.getListBooksComponent().getListModel(true));
                     buttonComponent.getButton().setEnabled(false);
-                    listBooksComponent.getJList().setEnabled(false);
+                    guestComponent.getListBooksComponent().getJList().setEnabled(false);
                 }else{
-                    listBooksComponent.getJList().setModel(listBooksComponent.getListModel(false));
+                    guestComponent.getListBooksComponent().getJList().setModel(guestComponent.getListBooksComponent().getListModel(false));
                     buttonComponent.getButton().setEnabled(true);
-                    listBooksComponent.getJList().setEnabled(true);
+                    guestComponent.getListBooksComponent().getJList().setEnabled(true);
                 }
             }
         });
         this.add(Box.createRigidArea(new Dimension(0,10)));
-        buttonComponent = new ButtonComponent("Взять книгу для чтения", widthPanel, 35, 120, 300);
+        buttonComponent = new ButtonComponent("Взять книгу для чтения", GuiApp.WITH_WINDOWS, 35, 120, 300);
         this.add(buttonComponent);
         buttonComponent.getButton().addActionListener(clickToButtonTakeOnBook());
     }
@@ -102,7 +107,7 @@ public class TabReaderTakeOnBooksComponents extends JPanel{
                     infoComponent.getInfo().setText("Выберите читателя");
                     return;
                 }
-                List<Book> books = listBooksComponent.getJList().getSelectedValuesList();
+                List<Book> books = guestComponent.getListBooksComponent().getJList().getSelectedValuesList();
                 if(books.isEmpty()){
                     infoComponent.getInfo().setForeground(Color.RED);
                     infoComponent.getInfo().setText("Выберите книги");
@@ -121,8 +126,8 @@ public class TabReaderTakeOnBooksComponents extends JPanel{
                         infoComponent.getInfo().setForeground(Color.BLUE);
                         infoComponent.getInfo().setText("Выбранные книги выданы");
                         comboBoxReadersComponent.getComboBox().setSelectedIndex(-1);
-                        listBooksComponent.getJList().setModel(listBooksComponent.getListModel(false));
-                        listBooksComponent.getJList().clearSelection();
+                        guestComponent.getListBooksComponent().getJList().setModel(guestComponent.getListBooksComponent().getListModel(false));
+                        guestComponent.getListBooksComponent().getJList().clearSelection();
                     }
                 } catch (Exception e) {
                     infoComponent.getInfo().setForeground(Color.RED);

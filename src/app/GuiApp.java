@@ -7,10 +7,10 @@ package app;
 
 import app.mycomopnents.GuestButtonsComponent;
 import app.mycomopnents.GuestComponent;
-import app.mycomopnents.TabAddReaderComponents;
-import app.mycomopnents.TabDirectorComponent;
-import app.mycomopnents.TabManagerComponent;
-import app.mycomopnents.TabReaderComponents;
+import app.mycomopnents.director.TabAddReaderComponents;
+import app.mycomopnents.director.TabDirectorComponent;
+import app.mycomopnents.manager.TabManagerComponent;
+import app.mycomopnents.reader.TabReaderComponents;
 import app.mycomopnents.security.LoginFrame;
 import entity.Reader;
 import entity.Role;
@@ -112,7 +112,7 @@ public class GuiApp extends JFrame{
                     jTabbedPane.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
                     jTabbedPane.setMinimumSize(jTabbedPane.getPreferredSize());
                     jTabbedPane.setMaximumSize(jTabbedPane.getPreferredSize());
-                    TabReaderComponents tabReaderComponents = new TabReaderComponents(guiApp.getWidth());
+                    TabReaderComponents tabReaderComponents = new TabReaderComponents();
                     jTabbedPane.addTab("Читатель", tabReaderComponents);
                     jTabbedPane.setForegroundAt(0, Color.BLUE);
                     TabManagerComponent tabManagerComponent = new TabManagerComponent(guiApp.getWidth());
@@ -126,7 +126,7 @@ public class GuiApp extends JFrame{
                   jTabbedPane.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
                   jTabbedPane.setMinimumSize(jTabbedPane.getPreferredSize());
                   jTabbedPane.setMaximumSize(jTabbedPane.getPreferredSize());
-                  tabReaderComponents = new TabReaderComponents(guiApp.getWidth());
+                  tabReaderComponents = new TabReaderComponents();
                   jTabbedPane.addTab("Читатель", tabReaderComponents);
                   jTabbedPane.setForegroundAt(1, Color.BLUE);
                   tabManagerComponent = new TabManagerComponent(guiApp.getWidth());
@@ -137,7 +137,7 @@ public class GuiApp extends JFrame{
                   jTabbedPane.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
                   jTabbedPane.setMinimumSize(jTabbedPane.getPreferredSize());
                   jTabbedPane.setMaximumSize(jTabbedPane.getPreferredSize());
-                  tabReaderComponents = new TabReaderComponents(guiApp.getWidth());
+                  tabReaderComponents = new TabReaderComponents();
                   jTabbedPane.addTab("Читатель", tabReaderComponents);
                   jTabbedPane.setForegroundAt(0, Color.BLUE);
                    break;

@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomopnents;
+package app.mycomopnents.reader;
 
+import app.GuiApp;
+import app.mycomopnents.ButtonComponent;
+import app.mycomopnents.CaptionComponent;
+import app.mycomopnents.ComboBoxReadersComponent;
+import app.mycomopnents.InfoComponent;
 import entity.Reader;
 import facade.ReaderFacade;
 import static java.awt.Component.CENTER_ALIGNMENT;
@@ -35,22 +40,22 @@ public class TabReaderComponents extends JPanel{
     private TabReaderReturnBooksComponents tabReturnBooksComponents;
     private ButtonComponent buttonComponent;
     private Reader reader;
-    public TabReaderComponents(int widthPanel) {
-        initComponents(widthPanel);
+    public TabReaderComponents() {
+        initComponents();
     }
 
-    private void initComponents(int widthPanel) {
-        this.setPreferredSize(new Dimension(widthPanel,450));
+    private void initComponents() {
+        this.setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS,450));
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
         JTabbedPane tabReaderTabbed = new JTabbedPane();
-        tabReaderTabbed.setPreferredSize(new Dimension(widthPanel-17,450));
+        tabReaderTabbed.setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS-17,450));
         tabReaderTabbed.setMinimumSize(tabReaderTabbed.getPreferredSize());
         tabReaderTabbed.setMaximumSize(tabReaderTabbed.getPreferredSize());
         tabReaderTabbed.setAlignmentX(CENTER_ALIGNMENT);
-        tabTakeOnBooksComponents = new TabReaderTakeOnBooksComponents(widthPanel);
+        tabTakeOnBooksComponents = new TabReaderTakeOnBooksComponents();
         tabReaderTabbed.addTab("Взять книгу для чтения", tabTakeOnBooksComponents);
-        tabReturnBooksComponents = new TabReaderReturnBooksComponents(widthPanel);
+        tabReturnBooksComponents = new TabReaderReturnBooksComponents(GuiApp.WITH_WINDOWS);
         tabReaderTabbed.addTab("Возврат книги", tabReturnBooksComponents);
         this.add(tabReaderTabbed);
         tabReaderTabbed.addChangeListener(new ChangeListener(){

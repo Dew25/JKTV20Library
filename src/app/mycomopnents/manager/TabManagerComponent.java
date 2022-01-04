@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomopnents;
+package app.mycomopnents.manager;
 
+import app.mycomopnents.ButtonComponent;
+import app.mycomopnents.CaptionComponent;
+import app.mycomopnents.EditorComponent;
+import app.mycomopnents.InfoComponent;
+import app.mycomopnents.lists.ListAuthorsComponent;
 import entity.Author;
 import entity.Book;
 import facade.BookFacade;
