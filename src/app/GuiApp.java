@@ -6,9 +6,11 @@
 package app;
 
 import app.mycomopnents.ButtonComponent;
+import app.mycomopnents.CaptionComponent;
 import app.mycomopnents.EditorComponent;
 import app.mycomopnents.GuestButtonsComponent;
 import app.mycomopnents.GuestComponent;
+import app.mycomopnents.InfoComponent;
 import app.mycomopnents.TabAddReaderComponents;
 import app.mycomopnents.TabDirectorComponent;
 import app.mycomopnents.TabManagerComponent;
@@ -26,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -39,6 +42,8 @@ import javax.swing.JTabbedPane;
 public class GuiApp extends JFrame{
     public static final int WITH_WINDOWS = 600;
     public static final int HEIGHT_WINDOWS = 450;
+    public static User user;
+    public static String role;
     private GuestComponent guestComponent;
     private GuestButtonsComponent guestButtonsComponent;
     private TabAddReaderComponents tabAddReaderComponents;
@@ -101,19 +106,50 @@ public class GuiApp extends JFrame{
         guestButtonsComponent.getButton1().addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
+                int widthWindows = 350;
                 JDialog dialogLogin = new JDialog(guiApp,"Введите логи и пароль",Dialog.ModalityType.DOCUMENT_MODAL);
-                dialogLogin.setPreferredSize(new Dimension(GuiApp.WITH_WINDOWS,GuiApp.HEIGHT_WINDOWS));
+                dialogLogin.setPreferredSize(new Dimension(widthWindows,260));
                 dialogLogin.setMaximumSize(dialogLogin.getPreferredSize());
                 dialogLogin.setMinimumSize(dialogLogin.getPreferredSize());
                 dialogLogin.getContentPane().setLayout(new BoxLayout(dialogLogin.getContentPane(), BoxLayout.Y_AXIS));
                 dialogLogin.setLocationRelativeTo(null);
-                EditorComponent loginComponent = new EditorComponent("Логин", GuiApp.WITH_WINDOWS, 27, 200);
-                EditorComponent passwordComponent = new EditorComponent("Пароль", GuiApp.WITH_WINDOWS, 27, 200);
-                ButtonComponent enterComponent = new ButtonComponent("Войти", GuiApp.WITH_WINDOWS, 27, 200, 150);
-                
+                CaptionComponent captionComponent = new CaptionComponent("Введите логин и пароль", widthWindows, 27);
+                InfoComponent infoComponent = new InfoComponent("", widthWindows, 27);
+                EditorComponent loginComponent = new EditorComponent("Логин", widthWindows, 27,80, 200);
+                EditorComponent passwordComponent = new EditorComponent("Пароль", widthWindows, 27,80, 200);
+                ButtonComponent enterComponent = new ButtonComponent("Войти", widthWindows, 27, 185, 100);
+                dialogLogin.getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
+                dialogLogin.getContentPane().add(captionComponent);
+                dialogLogin.getContentPane().add(Box.createRigidArea(new Dimension(0,5)));
+                dialogLogin.getContentPane().add(infoComponent);
+                dialogLogin.getContentPane().add(Box.createRigidArea(new Dimension(0,5)));
                 dialogLogin.getContentPane().add(loginComponent);
+                dialogLogin.getContentPane().add(Box.createRigidArea(new Dimension(0,5)));
                 dialogLogin.getContentPane().add(passwordComponent);
+                dialogLogin.getContentPane().add(Box.createRigidArea(new Dimension(0,15)));
                 dialogLogin.getContentPane().add(enterComponent);
+                enterComponent.getButton().addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        //Аутентификация - узнать есть ли такой пользователь
+                        User user = userFacade.find(loginComponent.getEditor().getText().trim());
+                        if(user == null){
+                            infoComponent.getInfo().setText("Нет такого пользователя");
+                            return;
+                        }
+                        //Авторизация - он ли это пользователь и какие у него права.
+                        if(!user.getPassword().equals(passwordComponent.getEditor().getText().trim())){
+                            infoComponent.getInfo().setText("Нет такого пользователя, или неверный пароль");
+                            return;
+                        }
+                        GuiApp.user = user;
+                        //Пользователь тот за кого себя выдает, устанавливаем разрешения.
+                        String role = userRolesFacade.topRole(user);
+                        GuiApp.role = role;
+                        dialogLogin.setVisible(false);
+                        dialogLogin.dispose();
+                    }
+                });
                 dialogLogin.pack();
                 dialogLogin.setVisible(true);
                 
