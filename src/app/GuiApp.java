@@ -107,8 +107,9 @@ public class GuiApp extends JFrame{
             @Override
             public void actionPerformed(ActionEvent ae) {
                 int widthWindows = 350;
+                int heightWindows = 260;
                 JDialog dialogLogin = new JDialog(guiApp,"Введите логи и пароль",Dialog.ModalityType.DOCUMENT_MODAL);
-                dialogLogin.setPreferredSize(new Dimension(widthWindows,260));
+                dialogLogin.setPreferredSize(new Dimension(widthWindows,heightWindows));
                 dialogLogin.setMaximumSize(dialogLogin.getPreferredSize());
                 dialogLogin.setMinimumSize(dialogLogin.getPreferredSize());
                 dialogLogin.getContentPane().setLayout(new BoxLayout(dialogLogin.getContentPane(), BoxLayout.Y_AXIS));

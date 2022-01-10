@@ -25,6 +25,14 @@ public class EditorComponent extends JPanel{
     public EditorComponent(String text, int widthWindow,int heightPanel, int editorWidth) {
         initComponents(text, widthWindow, heightPanel, 0, editorWidth);
     }
+    /**
+     * Компонент состоит из панели, на которой распологаются в строчку метка и текстовый редактор
+     * @param text - текст слева от редактора
+     * @param widthWindow - ширина компонента, обычно равна ширине окна
+     * @param heightPanel - высота панели редактора
+     * @param left - отступ от левого края окна до редактора. Ширина лейбела.
+     * @param editorWidth - ширина редактора
+     */
     public EditorComponent(String text, int widthWindow,int heightPanel,int left, int editorWidth) {
         initComponents(text, widthWindow, heightPanel,left, editorWidth);
     }
