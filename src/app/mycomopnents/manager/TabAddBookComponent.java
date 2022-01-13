@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomopnents;
+package app.mycomopnents.manager;
 
+import app.mycomopnents.ButtonComponent;
+import app.mycomopnents.CaptionComponent;
+import app.mycomopnents.EditorComponent;
+import app.mycomopnents.InfoComponent;
+import app.mycomopnents.ListAuthorsComponent;
 import entity.Author;
 import entity.Book;
 import facade.BookFacade;
@@ -20,7 +25,7 @@ import javax.swing.JPanel;
  *
  * @author Melnikov
  */
-public class TabManagerComponent extends JPanel{
+public class TabAddBookComponent extends JPanel{
     private CaptionComponent captionComponent;
     private InfoComponent infoComponent;
     private EditorComponent bookNameComponent;
@@ -28,7 +33,7 @@ public class TabManagerComponent extends JPanel{
     private EditorComponent publishedYearComponent;
     private EditorComponent quantityComponent;
     private ButtonComponent buttonComponent;
-    public TabManagerComponent(int widthWindow) {
+    public TabAddBookComponent(int widthWindow) {
         initComponents(widthWindow);
     }
 

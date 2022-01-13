@@ -3,11 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomopnents;
+package app.mycomopnents.director;
 
 import app.GuiApp;
+import app.mycomopnents.ButtonComponent;
+import app.mycomopnents.CaptionComponent;
+import app.mycomopnents.EditorComponent;
+import app.mycomopnents.InfoComponent;
 import entity.Reader;
+import entity.Role;
+import entity.User;
 import facade.ReaderFacade;
+import facade.RoleFacade;
+import facade.UserFacade;
+import facade.UserRolesFacade;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -78,15 +87,32 @@ public class TabAddReaderComponents extends JPanel{
                     return;
                 } 
                 reader.setPhone(phoneComponent.getEditor().getText());
-                
+                User newUser = new User();
+                if(loginComponent.getEditor().getText().isEmpty()){
+                   infoComponent.getInfo().setText("Введите логин");
+                    return;
+                } 
+                newUser.setLogin(loginComponent.getEditor().getText());
+                if(passwordComponent.getEditor().getText().isEmpty()){
+                    infoComponent.getInfo().setText("Введите пароль");
+                    return;
+                } 
+                newUser.setPassword(passwordComponent.getEditor().getText());
                 ReaderFacade readerFacade = new ReaderFacade();
-                
+                readerFacade.create(reader);
+                newUser.setReader(reader);
+                UserFacade userFacade = new UserFacade();
+                userFacade.create(newUser);
+                UserRolesFacade userRolesFacade = new UserRolesFacade();
+                userRolesFacade.setRole("READER",newUser);
                 try {
                     readerFacade.create(reader);
                     infoComponent.getInfo().setText("Читатель успешно добавлен");
                     phoneComponent.getEditor().setText("");
                     lastNameComponent.getEditor().setText("");
                     nameComponent.getEditor().setText("");
+                    loginComponent.getEditor().setText("");
+                    passwordComponent.getEditor().setText("");
                 } catch (Exception e) {
                     infoComponent.getInfo().setText("Читателя добавить не удалось");
                 }

@@ -17,11 +17,13 @@ import tools.Singleton;
  * @author Melnikov
  */
 public class UserRolesFacade extends AbstractFacade<UserRoles>{
+    private RoleFacade roleFacade;
     private EntityManager em;
     public UserRolesFacade() {
         super(UserRoles.class);
         Singleton singleton = Singleton.getInstance();
         em = singleton.getEntityManager();
+        roleFacade = new RoleFacade();
     }
 
     @Override
@@ -46,6 +48,39 @@ public class UserRolesFacade extends AbstractFacade<UserRoles>{
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public void setRole(String roleName, User newUser){
+        UserRoles userRoles= new UserRoles();
+        userRoles.setUser(newUser);
+        try {
+            this.removeRoles(newUser);
+            if(roleName.equals("ADMINISTRATOR")){
+                userRoles.setRole(roleFacade.find("ADMINISTRATOR"));
+                this.create(userRoles);
+                userRoles.setRole(roleFacade.find("MANAGER"));
+                this.create(userRoles);
+                userRoles.setRole(roleFacade.find("READER"));
+                this.create(userRoles);
+            }else if(roleName.equals("MANAGER")){
+                userRoles.setRole(roleFacade.find("MANAGER"));
+                this.create(userRoles);
+                userRoles.setRole(roleFacade.find("READER"));
+                this.create(userRoles);
+            }else if(roleName.equals("READER")){
+                userRoles.setRole(roleFacade.find("READER"));
+                this.create(userRoles);
+            }
+        } catch (Exception e) {
+            new Exception("Не удалось установить роль пользователю "+ newUser.getLogin());
+        }
+      
+        
+    }
+    private void removeRoles(User user){
+        em.createQuery("DELETE FROM UserRoles ur WHERE ur.user = :user")
+                .setParameter("user", user)
+                .executeUpdate();
     }
     
 }

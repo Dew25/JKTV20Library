@@ -3,9 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomopnents;
+package app.mycomopnents.reader;
 
 import app.GuiApp;
+import app.mycomopnents.ButtonComponent;
+import app.mycomopnents.CaptionComponent;
+import app.mycomopnents.ComboBoxReadersComponent;
+import app.mycomopnents.InfoComponent;
+import app.mycomopnents.ListHistoriesComponent;
 import entity.Book;
 import entity.History;
 import entity.Reader;

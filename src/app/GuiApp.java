@@ -11,10 +11,10 @@ import app.mycomopnents.EditorComponent;
 import app.mycomopnents.GuestButtonsComponent;
 import app.mycomopnents.GuestComponent;
 import app.mycomopnents.InfoComponent;
-import app.mycomopnents.TabAddReaderComponents;
-import app.mycomopnents.TabDirectorComponent;
-import app.mycomopnents.TabManagerComponent;
-import app.mycomopnents.TabReaderComponents;
+import app.mycomopnents.director.TabAddReaderComponents;
+import app.mycomopnents.director.TabDirectorComponent;
+import app.mycomopnents.manager.TabManagerComponent;
+import app.mycomopnents.reader.TabReaderComponent;
 import entity.Reader;
 import entity.Role;
 import entity.User;
@@ -44,9 +44,13 @@ public class GuiApp extends JFrame{
     public static final int HEIGHT_WINDOWS = 450;
     public static User user;
     public static String role;
+    private InfoComponent infoTopComponent;
     private GuestComponent guestComponent;
     private GuestButtonsComponent guestButtonsComponent;
     private TabAddReaderComponents tabAddReaderComponents;
+    private TabReaderComponent tabReaderComponent;
+    private TabManagerComponent tabManagerComponent;
+    private TabDirectorComponent tabDirectorComponent;
     private  GuiApp guiApp = this;
     private UserFacade userFacade = new UserFacade();
     private ReaderFacade readerFacade = new ReaderFacade();
@@ -100,6 +104,8 @@ public class GuiApp extends JFrame{
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+        infoTopComponent = new InfoComponent("", WITH_WINDOWS, 27);
+        this.add(infoTopComponent);
         guestComponent = new GuestComponent();
         guestButtonsComponent = new GuestButtonsComponent("Войти", "Зарегистрироваться", GuiApp.WITH_WINDOWS, 50,100,10,200);
         this.add(guestButtonsComponent);
@@ -147,6 +153,32 @@ public class GuiApp extends JFrame{
                         //Пользователь тот за кого себя выдает, устанавливаем разрешения.
                         String role = userRolesFacade.topRole(user);
                         GuiApp.role = role;
+                        infoTopComponent.getInfo().setText("Hello "+user.getReader().getFirstname());
+                        guiApp.getContentPane().remove(guestComponent);
+                        guiApp.getContentPane().remove(guestButtonsComponent);
+                        JTabbedPane jTabbedPane = new JTabbedPane();
+                        jTabbedPane.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
+                        jTabbedPane.setMinimumSize(jTabbedPane.getPreferredSize());
+                        jTabbedPane.setMaximumSize(jTabbedPane.getPreferredSize());
+                        if("READER".equals(GuiApp.role)){
+                            tabReaderComponent = new TabReaderComponent(GuiApp.WITH_WINDOWS);
+                            jTabbedPane.addTab("Читатель", tabReaderComponent);
+                        }else if("MANAGER".equals(GuiApp.role)){
+                            tabReaderComponent = new TabReaderComponent(GuiApp.WITH_WINDOWS);
+                            jTabbedPane.addTab("Читатель", tabReaderComponent);
+                            tabManagerComponent = new TabManagerComponent(GuiApp.WITH_WINDOWS);
+                            jTabbedPane.addTab("Библиотекарь", tabManagerComponent);
+                        }else if("ADMINISTRATOR".equals(GuiApp.role)){
+                            tabReaderComponent = new TabReaderComponent(GuiApp.WITH_WINDOWS);
+                            jTabbedPane.addTab("Читатель", tabReaderComponent);
+                            tabManagerComponent = new TabManagerComponent(GuiApp.WITH_WINDOWS);
+                            jTabbedPane.addTab("Библиотекарь", tabManagerComponent);
+                            tabDirectorComponent = new TabDirectorComponent(GuiApp.WITH_WINDOWS);
+                            jTabbedPane.addTab("Директор", tabDirectorComponent);
+                        }
+                        guiApp.getContentPane().add(jTabbedPane);
+                        guiApp.repaint();
+                        guiApp.revalidate();
                         dialogLogin.setVisible(false);
                         dialogLogin.dispose();
                     }
@@ -166,14 +198,17 @@ public class GuiApp extends JFrame{
                 guiApp.revalidate();
             }
         });
-        this.add(guestComponent);
+        if(GuiApp.user == null){
+           this.add(guestComponent);
+            
+        }
         
 //        
 //        JTabbedPane jTabbedPane = new JTabbedPane();
 //        jTabbedPane.setPreferredSize(new Dimension(WITH_WINDOWS,HEIGHT_WINDOWS));
 //        jTabbedPane.setMinimumSize(jTabbedPane.getPreferredSize());
 //        jTabbedPane.setMaximumSize(jTabbedPane.getPreferredSize());
-//        TabReaderComponents tabReaderComponents = new TabReaderComponents(this.getWidth());
+//        TabReaderComponent tabReaderComponents = new TabReaderComponent(this.getWidth());
 //        jTabbedPane.addTab("Читатель", tabReaderComponents);
 //        TabManagerComponent tabManagerComponent = new TabManagerComponent(this.getWidth());
 //        jTabbedPane.addTab("Библиотекарь", tabManagerComponent);
